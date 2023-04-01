@@ -1,19 +1,23 @@
-
 <head>
     <link rel="manifest" href="manifest.webmanifest">
 </head>
+
 <body>
     <canvas id="render-canvas"></canvas>
     <div id="user-interface">
         <img id="restart-btn" src="image/restart.png">
     </div>
     <style>
-        body, #render-canvas, #user-interface{
+        body,
+        #render-canvas,
+        #user-interface {
             margin: 0;
             width: 100%;
             height: 100vh;
+            overflow: hidden;
         }
-        #restart-btn{
+
+        #restart-btn {
             position: absolute;
             right: 0;
             bottom: 0;
@@ -43,94 +47,120 @@
         //Создание платформы и материала для неё
         const createPlatform = (zPos) => {
             let platform = new BABYLON.MeshBuilder.CreateBox('box', {
-        width: 6,
-        height: 0.1,
-        depth: 6,
-        wrap: true
-        }, scene);
-        let boxMaterial = new BABYLON.StandardMaterial('marerial', scene);
-        boxMaterial.emissiveTexture = new BABYLON.Texture('image/platform.png');
-        platform.material = boxMaterial;
-        platform.receiveShadows = true;
-        platform.physicsImpostor = new BABYLON.PhysicsImpostor(
-            platform,
-            BABYLON.PhysicsImpostor.BoxImpostor, {
-            mass: 0
-        },
-        scene);
-        platform.position.z = zPos;
+                width: 6,
+                height: 0.1,
+                depth: 6,
+                wrap: true
+            }, scene);
+            let boxMaterial = new BABYLON.StandardMaterial('marerial', scene);
+            boxMaterial.emissiveTexture = new BABYLON.Texture('image/platform.png');
+            platform.material = boxMaterial;
+            platform.receiveShadows = true;
+            platform.physicsImpostor = new BABYLON.PhysicsImpostor(
+                platform,
+                BABYLON.PhysicsImpostor.BoxImpostor, {
+                mass: 0
+            },
+                scene);
+            platform.position.z = zPos;
         }
 
-        for(let i = 0; i < 10; i++){
-            createPlatform(i*6);
+        for (let i = 0; i < 10; i++) {
+            createPlatform(i * 6);
         }
-        
+
 
         //Создание героя и материала для него
         let Garry = new BABYLON.MeshBuilder.CreateSphere('sphere', {
-        diameter: 0.8
-      }, scene);
-      Garry.position.y = 0.6;
-      let GarryMaterial = new BABYLON.StandardMaterial('material', scene);
-      GarryMaterial.emissiveTexture = new BABYLON.Texture('image/Garg.png');
-      Garry.material = GarryMaterial;
-      shadowGenerator.getShadowMap().renderList.push(Garry);
-      Garry.physicsImpostor = new BABYLON.PhysicsImpostor(
-        Garry,
-        BABYLON.PhysicsImpostor.SphereImpostor, {
+            diameter: 0.8
+        }, scene);
+        Garry.position.y = 0.6;
+        let GarryMaterial = new BABYLON.StandardMaterial('material', scene);
+        GarryMaterial.emissiveTexture = new BABYLON.Texture('image/Garg.png');
+        Garry.material = GarryMaterial;
+        shadowGenerator.getShadowMap().renderList.push(Garry);
+        Garry.physicsImpostor = new BABYLON.PhysicsImpostor(
+            Garry,
+            BABYLON.PhysicsImpostor.SphereImpostor, {
             mass: 1,
             //restitution: 2, //сила при отталкивании объекта
             friction: 5 //трение
         },
-        scene);
+            scene);
 
 
         //Алгоритм
-       let restartBtn = window.document.querySelector('restart-btn')
-       engine.runRenderLoop(()=>{
-        camera.position.z = Garry.getAbsolutePosition().z -12;
+        let restartBtn = window.document.querySelector('restart-btn')
+        engine.runRenderLoop(() => {
+            camera.position.z = Garry.getAbsolutePosition().z - 12;
             light.position.z = Garry.getAbsolutePosition().z;
             scene.render();
         });
 
         //Обработчики событий
-        restartBtn=document.querySelector('.restsrt-btn'); //перезагрузка
+        restartBtn = document.querySelector('.restsrt-btn'); //перезагрузка
         document.addEventListener('keydown', (event) => { //кнопочка enter
-        if (event.keyCode===13){
-            window.location.reload()
-         }
-        });  
-        document.addEventListener('keydown', (event) => {
-            if(event.keyCode===37){ //влево
-            Garry.PhysicsImpostor.applyImpuls(
-                new BABYLON.Vector3(-10, 0, 0),
-                Garry.getAbsolutePosition()  
-            );
-        }else if (event.keyCode===39){ //вправо
-            Garry.PhysicsImpostor.applyImpuls(
-                new BABYLON.Vector3(10, 0, 0),
-                Garry.getAbsolutePosition()  
-            );
-             }
+            if (event.keyCode === 13) {
+                window.location.reload()
+            }
         });
-
-        //Остановка Garry
-        document.addEventListener('keyup', (event) => {
-            if(event.keyCode===37 || event.keyCode===39){ 
-            Garry.PhysicsImpostor.setLinearVelocity(
-                new BABYLON.Vector3(0, 0, 0)),
-                Garry.PhysicsImpostor.setAngularVelocity(
-                new BABYLON.Vector3(0, 0, 0));
-        }});
-
-            //
-        document.addEventListener('keydown', () => {
-            Garry.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0,0,5));
+        window.addEventListener('keypress', (event) => {
+            let x = event.keyCode;
+            if (event.key == 'a' || event.key == 'A' || event.key == 'ф' || event.key == 'Ф') {
+                Garry.physicsImpostor.applyImpulse(
+                    new BABYLON.Vector3(-15, 0, 0),
+                    Garry.getAbsolutePosition()
+                );
+            }
         });
-
-        window.addEventListener('beforeinstallprompt', (event)=>{
+        window.addEventListener('keypress', (event) => {
+            let x = event.keyCode;
+            if (event.key == 'd' || event.key == 'D' || event.key == 'в' || event.key == 'В') {
+                Garry.physicsImpostor.applyImpulse(
+                    new BABYLON.Vector3(15, 0, 0),
+                    Garry.getAbsolutePosition()
+                );
+            }
+        });
+        window.addEventListener('keyup', () => {
+            Garry.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0, 0, 8));
+            Garry.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0, 0, 0));
+        });
+        window.addEventListener('beforeinstallprompt', (event) => {
             event.preventDefault();
-        })
+        });
+
+
+//Было так
+        // document.addEventListener('keydown', (event) => {
+        //     if(event.keyCode===37){ //влево
+        //     Garry.PhysicsImpostor.applyImpuls(
+        //         new BABYLON.Vector3(-10, 0, 0),
+        //         Garry.getAbsolutePosition()
+        //     );
+        // }else if (event.keyCode===39){ //вправо
+        //     Garry.PhysicsImpostor.applyImpuls(
+        //         new BABYLON.Vector3(10, 0, 0),
+        //         Garry.getAbsolutePosition()
+        //     );
+        //      }
+        // });
+
+        // //Остановка Garry
+        // document.addEventListener('keyup', (event) => {
+        //     if(event.keyCode===37 || event.keyCode===39){
+        //     Garry.PhysicsImpostor.setLinearVelocity(
+        //         new BABYLON.Vector3(0, 0, 0)),
+        //         Garry.PhysicsImpostor.setAngularVelocity(
+        //         new BABYLON.Vector3(0, 0, 0));
+        // }});
+        // document.addEventListener('keydown', () => {
+        //     Garry.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0,0,5));
+        // });
+
+        // window.addEventListener('beforeinstallprompt', (event)=>{
+        //     event.preventDefault();
+        // })
 
     </script>
 </body>
