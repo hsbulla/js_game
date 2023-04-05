@@ -5,9 +5,14 @@
 <body>
     <canvas id="render-canvas"></canvas>
     <div id="user-interface">
-        <img id="restart-btn" src="image/restart.png">
+        <img id="restart-btn" class="a-pos" src="image/restart.png">
+        <img id="coin-img" class="a-pos" src="image/coin.png">
+        <p id="coin-score" class="a-pos">0</p>
+        <p id="score" class="a-pos">0</p>
     </div>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap');
+
         body,
         #render-canvas,
         #user-interface {
@@ -15,13 +20,38 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
+            font-family: 'Black Ops One', cursive;
+            user-select: none;
+        }
+
+        .a-pos {
+            position: absolute;
         }
 
         #restart-btn {
-            position: absolute;
             right: 0;
             bottom: 0;
             width: 200px;
+        }
+
+        #coin-img {
+            top: 2vh;
+            right: 2vh;
+            width: 6vh;
+        }
+
+        #coin-score {
+            top: -6vh;
+            right: 10vh;
+            font-size: 7vh;
+        }
+
+        #score {
+            top: -6vh;
+            left: 2vh;
+            width: 100%;
+            text-align: left;
+            font-size: 7vh;
         }
     </style>
     <script src="https://cdn.babylonjs.com/babylon.js"></script>
@@ -41,9 +71,9 @@
             createGround: false,
             cameraContrast: 1.7,
             cameraExposure: 1.1
-        }); 
+        });
         //Создание камеры
-        let camera = new BABYLON.FreeCamera('camera', new BABYLON.Vector3(0, 10, -12), scene);
+        let camera = new BABYLON.FreeCamera('camera', new BABYLON.Vector3(0, 10, -15), scene);
         camera.setTarget(new BABYLON.Vector3(0, 0, 0));
         //Создание света - точечный свет
         let light = new BABYLON.PointLight('light', new BABYLON.Vector3(10, 10, 0), scene);
@@ -76,27 +106,28 @@
             createPlatform(i * 6);
         }
         // Создание монетки
-        let coinArray =[];
+        let coinArray = [];
         const createCoin = (pos) => {
-                BABYLON.SceneLoader.ImportMesh(
-                    null,
-                    'image/coin/',
-                    'scene.gltf',
-                    scene,
-                    (meshArray) => {
-                        let coin = meshArray[0];
-                        coin.scaling = new BABYLON.Vector3(0.04, 0.04, 0.04,);
-                        coin.position = pos
-                        shadowGenerator.addShadowCaster(coin);
-                        coin.receiveShadows = true;
-                        coinArray.push(coin);
-                    }
-                )
-            }
-        
+            BABYLON.SceneLoader.ImportMesh(
+                null,
+                'image/coin/',
+                'scene.gltf',
+                scene,
+                (meshArray) => {
+                    let coin = meshArray[0];
+                    coin.scaling = new BABYLON.Vector3(0.04, 0.04, 0.04,); //Размер монетки
+                    coin.position = pos //Позиция монетки
+                    shadowGenerator.addShadowCaster(coin); //создание тени
+                    coin.receiveShadows = true;
+                    coinArray.push(coin);
+                }
+            )
+        }
+
         //Создание препядствий
         let lastRand = 0;//Глобальная переменная
         let boxArray = []; //Массив для хранения всех блоков
+        let pointArray = []
         const CreateBox = (xPos, zPos) => {
             let box = new BABYLON.MeshBuilder.CreateBox('box', {
                 width: 2,
@@ -126,8 +157,13 @@
             lastRand = rand;
             for (let i = 0; i < 3; i++) {
                 if (i === rand) {
-                    createCoin(new BABYLON.Vector3((i*2)-2, 1, 3+zPos))
-                    continue
+                    if (Math.random() < 0.65) {   //Создание монетки с шансом 65% между препядствиями
+                        createCoin(new BABYLON.Vector3((i * 2) - 2, 1, 3 + zPos))
+                    }
+
+                    pointArray.push(new BABYLON.Vector3((i * 2) - 2, 1, 3 + zPos))    //создание невидимых точек
+                    continue;
+
                 };
                 CreateBox((i * 2 - 2), zPos);
             }
@@ -155,18 +191,32 @@
             friction: 5 //трение
         },
             scene);
-    
+
         //Алгоритм
-        let restartBtn = window.document.querySelector('restart-btn')
+        let restartBtn = window.document.querySelector('restart-btn');
+        let scoreInfo = window.document.querySelector('#score'); // переменная которая выводит очки на экран
+        let coininfo = window.document.querySelector('#coin-score'); // переменная которая выводит количество монет на экран
+        let score = 0; //переменная для подсчета очков
+        let coin = 0; //переменная для подсчета монет
         scene.registerBeforeRender(() => { //Проверка не столкнулся ли мяч с препядствиями
             for (let i = 0; i < boxArray.length; i++) {
                 if (Garry.intersectsMesh(boxArray[i], true)) {
                     boxArray[i].material.emissiveColor = new BABYLON.Color3(0.5, 0, 0)
                 }
             }
-            for(let i = 0; i < coinArray.length; i++){  //Проверка не столкнулся ли мяч с монеткой
-                if(Garry.intersectsMesh(coinArray[i],false)){
-                    coinArray[i].dispose(); //удаление объекта со сцены
+            for (let i = 0; i < coinArray.length; i++) {  //Проверка не столкнулся ли мяч с монеткой
+                if (Garry.intersectsMesh(coinArray[i], false)) {
+                    coin++;
+                    coininfo.innerText = coin;
+                    coinArray[i].dispose(); //удаление объекта со сцены 
+                    coinArray.splice(i, 1)// //При первом столкновении удаляется монетка
+                }
+            }
+            for (let i = 0; i < pointArray.length; i++) {  //Проверка на столкновение с невидимой точкой
+                if (Garry.intersectsPoint(pointArray[i])) {
+                    score++;
+                    scoreInfo.innerText = score;
+                    pointArray.splice(i, 1); //При первом столкновении невидимый куб удаляется
                 }
             }
         })
@@ -203,6 +253,9 @@
         });
         window.addEventListener('keyup', () => {
             Garry.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0, 0, 10));
+            if (score >= '5') {
+                Garry.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0, 0, 12)); // Если очков больше 5 мяч ускоряется
+            }
             Garry.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0, 0, 0));
         });
         window.addEventListener('beforeinstallprompt', (event) => {
