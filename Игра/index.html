@@ -198,6 +198,27 @@
         let coininfo = window.document.querySelector('#coin-score'); // переменная которая выводит количество монет на экран
         let score = 0; //переменная для подсчета очков
         let coin = 0; //переменная для подсчета монет
+        //Функции
+        const saveCoin = () => {
+            window.localStorage.setItem('coin', coin);
+            // Сохранение данных
+            // window.sessionStorage - после обновления страницы
+            // window.localStorage - после закрытия страницы/браузера
+            // .setItem('coinScore', 5) - сохраняет данные в ячейку, а если нет - создает ее  
+            // 5 <- .getItem('coinScore') - извелекает данные из ячейки, а если нет - возращает null
+            // .removeItem('coinScore') - удаляет ячейку
+            // .clear() - удаляет все данные localStorage связанные с этой страницей
+        }
+        const loadCoin = () => {
+                coin = (window.localStorage.getItem('coin'))
+                    ? window.localStorage.getItem('coin')
+                    : 0
+                    ;
+                coininfo.innerText = coin;
+            }
+        loadCoin();
+
+        //Встроенные функции Babylon.js
         scene.registerBeforeRender(() => { //Проверка не столкнулся ли мяч с препядствиями
             for (let i = 0; i < boxArray.length; i++) {
                 if (Garry.intersectsMesh(boxArray[i], true)) {
@@ -208,6 +229,7 @@
                 if (Garry.intersectsMesh(coinArray[i], false)) {
                     coin++;
                     coininfo.innerText = coin;
+                    saveCoin();
                     coinArray[i].dispose(); //удаление объекта со сцены 
                     coinArray.splice(i, 1)// //При первом столкновении удаляется монетка
                 }
