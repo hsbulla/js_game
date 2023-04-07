@@ -201,13 +201,6 @@
         //Функции
         const saveCoin = () => {
             window.localStorage.setItem('coin', coin);
-            // Сохранение данных
-            // window.sessionStorage - после обновления страницы
-            // window.localStorage - после закрытия страницы/браузера
-            // .setItem('coinScore', 5) - сохраняет данные в ячейку, а если нет - создает ее  
-            // 5 <- .getItem('coinScore') - извелекает данные из ячейки, а если нет - возращает null
-            // .removeItem('coinScore') - удаляет ячейку
-            // .clear() - удаляет все данные localStorage связанные с этой страницей
         }
         const loadCoin = () => {
                 coin = (window.localStorage.getItem('coin'))
@@ -255,7 +248,7 @@
                 window.location.reload()
             }
         });
-        window.addEventListener('keypress', (event) => {
+        window.addEventListener('keypress', (event) => {//Управление WASD
             let x = event.keyCode;
             if (event.key == 'a' || event.key == 'A' || event.key == 'ф' || event.key == 'Ф') {
                 Garry.physicsImpostor.applyImpulse(
@@ -264,9 +257,28 @@
                 );
             }
         });
-        window.addEventListener('keypress', (event) => {
+        window.addEventListener('keypress', (event) => {//Управление WASD
             let x = event.keyCode;
             if (event.key == 'd' || event.key == 'D' || event.key == 'в' || event.key == 'В') {
+                Garry.physicsImpostor.applyImpulse(
+                    new BABYLON.Vector3(15, 0, 0),
+                    Garry.getAbsolutePosition()
+                );
+                // console.log("2");
+            }
+        });
+        window.addEventListener('keydown', (event) => {//Управление стрелкой
+            let x = event.keyCode;
+            if (event.key == 'ArrowLeft') {
+                Garry.physicsImpostor.applyImpulse(
+                    new BABYLON.Vector3(-15, 0, 0),
+                    Garry.getAbsolutePosition()
+                );
+            }
+        });
+        window.addEventListener('keydown', (event) => {//Управление стрелкой
+            let x = event.keyCode;
+            if (event.key == 'ArrowRight') {
                 Garry.physicsImpostor.applyImpulse(
                     new BABYLON.Vector3(15, 0, 0),
                     Garry.getAbsolutePosition()
