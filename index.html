@@ -1,5 +1,11 @@
+<html lang="EN">
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-widht, initial-scale=1.0">
+    <link type = "text/css" rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.webmanifest">
+    <title>Harry Poter</title>
 </head>
 
 <body>
@@ -10,50 +16,7 @@
         <p id="coin-score" class="a-pos">0</p>
         <p id="score" class="a-pos">0</p>
     </div>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap');
-
-        body,
-        #render-canvas,
-        #user-interface {
-            margin: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            font-family: 'Black Ops One', cursive;
-            user-select: none;
-        }
-
-        .a-pos {
-            position: absolute;
-        }
-
-        #restart-btn {
-            right: 0;
-            bottom: 0;
-            width: 200px;
-        }
-
-        #coin-img {
-            top: 2vh;
-            right: 2vh;
-            width: 6vh;
-        }
-
-        #coin-score {
-            top: -6vh;
-            right: 10vh;
-            font-size: 7vh;
-        }
-
-        #score {
-            top: -6vh;
-            left: 2vh;
-            width: 100%;
-            text-align: left;
-            font-size: 7vh;
-        }
-    </style>
+    
     <script src="https://cdn.babylonjs.com/babylon.js"></script>
     <script src="https://cdn.babylonjs.com/cannon.js"></script>
     <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.js"></script>
