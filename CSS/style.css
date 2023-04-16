@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap');
+
+body,
+#render-canvas,
+#user-interface {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Black Ops One', cursive;
+    -webkit-user-select:none;
+     user-select: none;
+}
+
+.a-pos {
+    position: absolute;
+}
+
+#restart-btn {
+    right: 0;
+    bottom: 0;
+    width: 200px;
+}
+
+#coin-img {
+    top: 2vh;
+    right: 2vh;
+    width: 6vh;
+}
+
+#coin-score {
+    top: -6vh;
+    right: 10vh;
+    font-size: 7vh;
+}
+
+#score {
+    top: -6vh;
+    left: 2vh;
+    width: 100%;
+    text-align: left;
+    font-size: 7vh;
+}
