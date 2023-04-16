@@ -42,9 +42,7 @@ const createPlatform = (zPos) => {
     platform.position.z = zPos;
 }
 
-for (let i = 0; i < 10; i++) {
-    createPlatform(i * 6);
-}
+
 // Создание монетки
 let coinArray = [];
 const createCoin = (pos) => {
@@ -109,9 +107,6 @@ const CreateBoxRow = (zPos) => { //Этим мы обозначаем ряд п�
     }
 }
 
-for (let i = 0; i < 10; i++) {
-    CreateBoxRow(i * 6);
-}
 
 
 //Создание героя и материала для него
@@ -131,6 +126,12 @@ Garry.physicsImpostor = new BABYLON.PhysicsImpostor(
 },
     scene);
 
+for (let i = 0; i < 6; i++) {
+    createPlatform(i * 6);
+    if (i === 0) continue;
+    CreateBoxRow(i * 6);
+}
+
 //Алгоритм
 //Извлеченеи тегов из разметки
 let restartBtn = window.document.querySelector('restart-btn');
@@ -148,6 +149,11 @@ let score = 0; //переменная для подсчета очков
 let coin = 0; //переменная для подсчета монет
 let state = PLAY; //Текущее состояние приложения
 //Функции
+const newRoadBlock = (zPos) => {
+    createPlatform(zPos*6);
+    CreateBoxRow(zPos*6);
+
+}
 const saveCoin = () => {
     window.localStorage.setItem('coin', coin);
 }
@@ -200,9 +206,12 @@ scene.registerBeforeRender(() => { //Проверка не столкнулся 
     }
     for (let i = 0; i < pointArray.length; i++) {  //Проверка на столкновение с невидимой точкой
         if (Garry.intersectsPoint(pointArray[i])) {
-            score++;
             scoreInfo.innerText = score;
+            score++;
             pointArray.splice(i, 1); //При первом столкновении невидимый куб удаляется
+            if (pointArray.length <= 4){
+                newRoadBlock((pointArray[pointArray.length - 1].z+3)/6);
+            }
         }
     }
 })
@@ -265,7 +274,7 @@ window.addEventListener('keydown', (event) => {//Управление стрел
 window.addEventListener('keyup', () => {
     Garry.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0, 0, 10));
     if (score >= '5') {
-        Garry.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0, 0, 12)); // Если очков больше 5 мяч ускоряется
+        Garry.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0, 0, 11)); // Если очков больше 5 мяч ускоряется
     }
     Garry.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0, 0, 0));
 });
