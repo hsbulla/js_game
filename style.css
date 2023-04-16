@@ -8,7 +8,8 @@ body,
     height: 100%;
     overflow: hidden;
     font-family: 'Black Ops One', cursive;
-    user-select: none;
+    -webkit-user-select:none;
+     user-select: none;
 }
 
 .a-pos {
