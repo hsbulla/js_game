@@ -127,17 +127,26 @@ Garry.physicsImpostor = new BABYLON.PhysicsImpostor(
     Garry,
     BABYLON.PhysicsImpostor.SphereImpostor, { //Присваеваем объекту физические свойства
     mass: 1,
-    //restitution: 2, //сила при отталкивании объекта
     friction: 5 //трение
 },
     scene);
 
 //Алгоритм
+//Извлеченеи тегов из разметки
 let restartBtn = window.document.querySelector('restart-btn');
 let scoreInfo = window.document.querySelector('#score'); // переменная которая выводит очки на экран
 let coininfo = window.document.querySelector('#coin-score'); // переменная которая выводит количество монет на экран
+let playScreen = window.document.querySelector('#play-screen');
+let gameOverScreen = window.document.querySelector('#game-over-screen');
+let bestScoreInfo = window.document.querySelector('#best-score');
+let nowScoreInfo = window.document.querySelector('#now-score');
+//Константы
+const PLAY = 'play';
+const GAME_OVER = 'game-over';
+//Переменные
 let score = 0; //переменная для подсчета очков
 let coin = 0; //переменная для подсчета монет
+let state = PLAY; //Текущее состояние приложения
 //Функции
 const saveCoin = () => {
     window.localStorage.setItem('coin', coin);
@@ -149,13 +158,35 @@ const loadCoin = () => {
             ;
         coininfo.innerText = coin;
     }
-loadCoin();
+const saveBestScore = () => {
+    window.localStorage.setItem('bestScore', score);
+}
+const loadBestScore = () => {
+    return (window.localStorage.getItem('bestScore'))
+        ? window.localStorage.getItem('bestScore')
+        : 0
+    ;
+}
+const setgameOverScreen = () => { //Окно GAME OVER
+    state = GAME_OVER;
+    playScreen.style.display = 'none'; 
+    gameOverScreen.style.display = 'block';
+    let bestScore = loadBestScore();
+    if (score > bestScore){
+        saveBestScore();
+        bestScore = score;
+    }
+    bestScoreInfo.innerText = `BEST: ${bestScore}`;
+    nowScoreInfo.innerText = `NOW: ${score}`;
+}
 
+loadCoin();
 //Встроенные функции Babylon.js
 scene.registerBeforeRender(() => { //Проверка не столкнулся ли мяч с препядствиями
     for (let i = 0; i < boxArray.length; i++) {
         if (Garry.intersectsMesh(boxArray[i], true)) {
-            boxArray[i].material.emissiveColor = new BABYLON.Color3(0.5, 0, 0)
+            boxArray[i].material.emissiveColor = new BABYLON.Color3(0.5, 0, 0);
+            setgameOverScreen();
         }
     }
     for (let i = 0; i < coinArray.length; i++) {  //Проверка не столкнулся ли мяч с монеткой
@@ -188,7 +219,9 @@ document.addEventListener('keydown', (event) => { //кнопочка enter
         window.location.reload()
     }
 });
+
 window.addEventListener('keypress', (event) => {//Управление WASD
+    if (state !== GAME_OVER){
     let x = event.keyCode;
     if (event.key == 'a' || event.key == 'A' || event.key == 'ф' || event.key == 'Ф') {
         Garry.physicsImpostor.applyImpulse(
@@ -196,18 +229,20 @@ window.addEventListener('keypress', (event) => {//Управление WASD
             Garry.getAbsolutePosition()
         );
     }
-});
-window.addEventListener('keypress', (event) => {//Управление WASD
-    let x = event.keyCode;
+    let y = event.keyCode;
     if (event.key == 'd' || event.key == 'D' || event.key == 'в' || event.key == 'В') {
         Garry.physicsImpostor.applyImpulse(
             new BABYLON.Vector3(15, 0, 0),
             Garry.getAbsolutePosition()
         );
-        // console.log("2");
     }
+}else{
+    window.location.reload();
+}
 });
+
 window.addEventListener('keydown', (event) => {//Управление стрелкой
+    if (state !== GAME_OVER){
     let x = event.keyCode;
     if (event.key == 'ArrowLeft') {
         Garry.physicsImpostor.applyImpulse(
@@ -215,16 +250,18 @@ window.addEventListener('keydown', (event) => {//Управление стрел
             Garry.getAbsolutePosition()
         );
     }
-});
-window.addEventListener('keydown', (event) => {//Управление стрелкой
-    let x = event.keyCode;
+    let y = event.keyCode;
     if (event.key == 'ArrowRight') {
         Garry.physicsImpostor.applyImpulse(
             new BABYLON.Vector3(15, 0, 0),
             Garry.getAbsolutePosition()
         );
     }
+}else{
+    window.location.reload();
+}
 });
+
 window.addEventListener('keyup', () => {
     Garry.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0, 0, 10));
     if (score >= '5') {

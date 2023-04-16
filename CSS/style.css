@@ -11,7 +11,7 @@ body,
     -webkit-user-select:none;
      user-select: none;
 }
-
+/* PLAY SCREEN */
 .a-pos {
     position: absolute;
 }
@@ -40,4 +40,52 @@ body,
     width: 100%;
     text-align: left;
     font-size: 7vh;
+}
+/* GAME OVER SCREEN */
+#game-over-screen {
+    display: none;
+}
+
+.game-over-p{
+    position: absolute;
+    width: 100%;
+    text-align: center;
+}
+#game-over-info{
+    top: 10vh;
+    font-size: 7vh;   
+}
+#best-score{
+    top: 30vh;
+    font-size: 6vh;
+}
+#now-score{
+    top: 40vh;
+    font-size: 6vh;
+}
+#tap-info{
+    top: 70vh;
+    font-size: 4vh;
+    animation-name: tap-info-anim;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+}
+/* Анимации */
+@keyframes tap-info-anim {
+    from{
+        font-size: 4vh;
+        top: 70vh;
+        opacity: 0;
+    }
+    to{
+        font-size: 4vh;
+        top: 70vh;
+        opacity: 0;
+    }
+    50%{
+        font-size: 4.5vh;
+        top: 69.5vh;
+        opacity: 1;
+    }
+    
 }
