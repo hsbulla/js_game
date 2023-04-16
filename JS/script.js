@@ -30,7 +30,7 @@ const createPlatform = (zPos) => {
         wrap: true
     }, scene);
     let boxMaterial = new BABYLON.StandardMaterial('marerial', scene);
-    boxMaterial.emissiveTexture = new BABYLON.Texture('image/platform.png');
+    boxMaterial.emissiveTexture = new BABYLON.Texture('../img/platform.png');
     platform.material = boxMaterial;
     platform.receiveShadows = true;
     platform.physicsImpostor = new BABYLON.PhysicsImpostor(
@@ -50,7 +50,7 @@ let coinArray = [];
 const createCoin = (pos) => {
     BABYLON.SceneLoader.ImportMesh(
         null,
-        'image/coin/',
+        '../img/coin/',
         'scene.gltf',
         scene,
         (meshArray) => {
@@ -120,7 +120,7 @@ let Garry = new BABYLON.MeshBuilder.CreateSphere('sphere', {
 }, scene);
 Garry.position.y = 0.6;
 let GarryMaterial = new BABYLON.StandardMaterial('material', scene);
-GarryMaterial.emissiveTexture = new BABYLON.Texture('image/Garg.png');
+GarryMaterial.emissiveTexture = new BABYLON.Texture('../img/garg.png');
 Garry.material = GarryMaterial;
 shadowGenerator.getShadowMap().renderList.push(Garry);
 Garry.physicsImpostor = new BABYLON.PhysicsImpostor(
