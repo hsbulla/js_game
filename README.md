@@ -2,7 +2,7 @@
 Welcome to the game "Harry Potter: Running for Coins"! In this game, Harry Potter is running around the magical world, collecting coins and avoiding obstacles.
 
 ## How to play:
-1. Start the game by clicking on the "Get to the game" button.
+1. Start the game by entering your nickname and clicking the "Get to the game" button.
 2. Harry Potter will run automatically. Use the left and right keys to move around the screen and avoid obstacles.
 3. Collect coins to get points.
 4. If Harry Potter collides with an obstacle, the game will end.
