@@ -29,7 +29,7 @@ Welcome to the game "Harry Potter: The Coin Run"! In this game, Harry Potter is 
 For the first startup, execute the following commands in sequence:
 1. cd backend-container
 2. python3 -m venv venv
-3. source venv/bin/activate
+3. source venv/bin/activate (venv\Scripts\activate.bat)
 4. pip install -r requirements.txt
 5. cd game_project
 6. python3 manage.py runserver
@@ -37,7 +37,7 @@ For the first startup, execute the following commands in sequence:
 
 For subsequent starts, execute the following commands:
 1. cd backend-container
-2. source venv/bin/activate
+2. source venv/bin/activate (venv\Scripts\activate.bat)
 3. cd game_project
 4. python3 manage.py runserver
 *To stop the server, use the key combination: ^C
