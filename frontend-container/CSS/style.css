@@ -33,6 +33,11 @@ body,
     right: 10vh;
     font-size: 7vh;
 }
+#nickname{
+    top: 5vh;
+    right: 2vh;
+    font-size: 5vh;
+}
 
 #score {
     top: -6vh;
