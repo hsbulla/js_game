@@ -1,6 +1,6 @@
+<!DOCTYPE html>
 <html lang="EN">
 <head>
-
     {% load static %}
 	<link rel="stylesheet" href="{% static "CSS/style.css" %}" />
 
@@ -14,13 +14,9 @@
 <body>
         <canvas id="render-canvas"></canvas>
         <div id="user-interface">
-
-            <img id="restart-btn" class="a-pos" src={% static "img/restart.png" %} alt="#">
             <img id="coin-img" class="a-pos" src={% static "img/coin.png" %} alt="#">
-
-
             <p id="coin-score" class="a-pos">0</p>
-            <p id="nickname" class="a-pos">Avesalon</p>
+            <p id="nickname" class="a-pos">{{ nickname }}</p>
             <div id="play-screen">
                 <p id="score" class="a-pos">0</p>
             </div>
@@ -39,6 +35,5 @@
     <script src="https://cdn.babylonjs.com/cannon.js"></script>
     <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.js"></script>
     <script src="{% static "JS/script.js" %}"></script>
-
 </body>
 </html>
