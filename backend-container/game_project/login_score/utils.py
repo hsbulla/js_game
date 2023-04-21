@@ -21,4 +21,7 @@ player_nicknames = ['Bakugan74', 'hsbulla',
                     'Melari','Umanllivo',
                     'Jamuc','Fadeedo',
                     'Pafi','Gaca', 
-                    'shyddle']
+                    'shyddle', 'player_132',
+                    'player_114','player_49',
+                    'player_13','player_7',
+                    'player_26','player_34']
