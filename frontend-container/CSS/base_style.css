@@ -22,14 +22,12 @@ header img {
 	border-radius: 50
 }
 
-
 .logo-container {
 	position: absolute;
 	top: 0;
 	left: 0;
 	padding: 20px;
 }
-
 
 main {
 	margin: 50px auto;
@@ -39,6 +37,7 @@ main {
 	box-shadow: 0 0 10px rgba(0,0,0,0.3);
 	border-radius: 5px;
 }
+
 .scoreboard {
 	display: flex;
 	justify-content: space-between;
@@ -50,6 +49,7 @@ main {
 	box-shadow: 0 0 10px rgba(0,0,0,0.3);
 	border-radius: 5px;
 }
+
 .scoreboard p{
 
 	height: 40px;
@@ -58,6 +58,7 @@ main {
 	align-items: center;
 	justify-content: center;
 }
+
 .scoreboard img {
 	width: 50px;
 	height: 50px;
@@ -69,9 +70,11 @@ main {
 
 .input-container {
 	display: flex;
-	flex-direction: column;
-	align-items: center;
-	margin-bottom: 30px;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    align-content: center;
 }
 
 h2 {
@@ -82,6 +85,14 @@ h2 {
 	margin-bottom: 10px;
 }
 
+.input-container form{
+	width: 400px;
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
+    align-content: center;
+}
 input {
 	padding: 10px;
 	font-size: 1.2rem;
