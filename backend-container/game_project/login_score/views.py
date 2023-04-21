@@ -35,6 +35,10 @@ def login_score(request):
 def login_request(request):
 
     nickname = request.POST.get("nickname")
+    if nickname == "":
+        nickname = "player_"
+        number = str(random.randint(103, 138))
+        nickname = nickname+number
 
     data = {"nickname": nickname}
 
