@@ -42,13 +42,12 @@ const createPlatform = (zPos) => {
     platform.position.z = zPos;
 }
 
-
 // Создание монетки
 let coinArray = [];
 const createCoin = (pos) => {
     BABYLON.SceneLoader.ImportMesh(
         null,
-        '../img/coin/',
+        pathToImage_coin,
         'scene.gltf',
         scene,
         (meshArray) => {
@@ -61,7 +60,6 @@ const createCoin = (pos) => {
         }
     )
 }
-
 
 
 //Создание препядствий
