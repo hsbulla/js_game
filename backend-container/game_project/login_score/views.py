@@ -1,9 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 import random
+import json
 from login_score import utils
-
-
 
 def login_score(request):
 
@@ -31,7 +30,6 @@ def login_score(request):
     
     return render(request, "base.html", context= data) 
 
-
 def login_request(request):
 
     nickname = request.POST.get("nickname")
@@ -39,7 +37,29 @@ def login_request(request):
         nickname = "player_"
         number = str(random.randint(103, 138))
         nickname = nickname+number
-
+        
     data = {"nickname": nickname}
 
     return render(request, "index.html", context = data)
+
+def admin_custom_launcher(request):
+
+    with open('../../frontend-container/JSON/api-container.json') as json_file:
+        data = json.load(json_file)
+        platform_now = data['platform']
+        background_now = data['background']
+    data_now = {"platform_now": platform_now, "background_now": background_now}
+
+    platform = request.POST.get("platform_select")
+    background = request.POST.get("background_select")
+
+    data = {"platform": platform, "background": background}
+
+    platform_now = platform
+    background_now = background
+    data_now = {"platform_now": platform_now, "background_now": background_now}
+    
+    with open('../../frontend-container/JSON/api-container.json', 'w') as outfile:
+        json.dump(data, outfile)
+
+    return render(request, "custom_launcher.html", context = data_now)

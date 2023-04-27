@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADMIN Custom Game</title>
+</head>
+<body>
+    <div>
+        <H1>ADMIN Custom Game</H1>
+        <form method="post" action="admin_custom_launcher">
+            {% csrf_token %}
+            <div>
+                <output id="platform" name="platform">Now: {{platform_now}} /\ New:</output>
+                <select id="platform_select" name="platform_select">
+                    <option value="platrform_1">Platform 1</option>
+                    <option value="platrform_2">Platform 2</option>
+                    <option value="platrform_3">Platform 3</option>
+                  </select>
+            </div>
+            <div>
+                <output id="background" name="background">Now: {{background_now}} /\ New:</output>
+                <select id="background_select" name="background_select">
+                    <option value="background_1">Background 1</option>
+                    <option value="background_2">Background 2</option>
+                    <option value="background_3">Background 3</option>
+                  </select>
+            </div>
+            <button type="submit">Apply</button>
+        </form>
+</body>
+</html>
