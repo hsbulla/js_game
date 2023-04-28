@@ -13,6 +13,12 @@ scene.createDefaultEnvironment({
     cameraExposure: 1.1
 });
 //Создание фона
+let skybox = new BABYLON.MeshBuilder.CreateBox('skyBox',{size:1000}, scene);
+let skyboxMaterial = new BABYLON.StandardMaterial('skyBox', scene);
+skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture(pathToImage_background, scene);
+skyboxMaterial.reflectionTexture.coordinateMode = BABYLON.Texture.SKYBOX_MODE;
+skyboxMaterial.backFaceCulling = false;
+skybox.material = skyboxMaterial;
 
 
 
