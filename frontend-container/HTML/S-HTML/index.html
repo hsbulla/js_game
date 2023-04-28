@@ -26,12 +26,31 @@
             </div>
         </div>
         <script>
-            var pathToImage_platform = '{% static "img/platform/platform.png" %}';
+
+            var pathToJSON_api = '{% static "JSON/api-container.json" %}';
+            fetch(pathToJSON_api)
+                .then(response => response.json())
+                .then(data => {
+                    var platform_code = data.platform
+                    var background_code = data.background
+                    var obstacle_code = data.obstacle
+
+                    if (platform_code = "platrform_1"){
+                        pathToImage_platform = '{% static "img/platform/platform_1.png" %}';
+                    }
+                    if (platform_code = "platrform_2"){
+                        pathToImage_platform = '{% static "img/platform/platform_2.png" %}';
+                    }
+                    if (platform_code = "platrform_3"){
+                        pathToImage_platform = '{% static "img/platform/platform_3.png" %}';
+                    }
+                })
             var pathToImage_garry = '{% static "img/garg.png" %}';
-            var pathToImage_coin = '{% static "img/coin/" %}';;
+            var pathToImage_coin = '{% static "img/coin/" %}';
         </script>
     <script src="https://cdn.babylonjs.com/babylon.js"></script>
     <script src="https://cdn.babylonjs.com/cannon.js"></script>
     <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.js"></script>
     <script src="{% static "JS/script.js" %}"></script>
+</body>
 </html>
