@@ -24,11 +24,29 @@
                 <p id="tap-info" class="game-over-p">Press any key to restart</p>
             </div>
         </div>
-    <script>
-            var pathToImage_platform = '../img/platform/platform_1.png';
+        <script>
+
+            var pathToJSON_api = '../JSON/api-container.json';
+            fetch(pathToJSON_api)
+                .then(response => response.json())
+                .then(data => {
+                    var platform_code = data.platform
+                    var background_code = data.background
+                    var obstacle_code = data.obstacle
+
+                    if (platform_code == "platform_1"){
+                        pathToImage_platform = '../img/platform/platform_1.png';
+                    }
+                    if (platform_code == "platform_2"){
+                        pathToImage_platform = '../img/platform/platform_2.png';
+                    }
+                    if (platform_code == "platform_3"){
+                        pathToImage_platform = '../img/platform/platform_3.png';
+                    }
+                })
             var pathToImage_garry = '../img/garg.png';
             var pathToImage_coin = '../img/coin/';
-    </script>
+        </script>
     <script src="https://cdn.babylonjs.com/babylon.js"></script>
     <script src="https://cdn.babylonjs.com/cannon.js"></script>
     <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.js"></script>
