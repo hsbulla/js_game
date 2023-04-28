@@ -1,9 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-import random
 from login_score import utils
-
-
+from .models import custom_game
+import random, json
 
 def login_score(request):
 
@@ -31,15 +30,23 @@ def login_score(request):
     
     return render(request, "base.html", context= data) 
 
-
 def login_request(request):
+
+    custom_game_elements = custom_game.objects.all()
+    for elements in custom_game_elements:
+        custom_game_elements_platforms = elements.platforms
+        custom_game_elements_backgrounds = elements.backgrounds
+        custom_game_elements_obstacle = elements.obstacle
+    data = {"platform": custom_game_elements_platforms, "background": custom_game_elements_backgrounds, "obstacle": custom_game_elements_obstacle} 
+    with open('../../frontend-container/JSON/api-container.json', 'w') as outfile:
+        json.dump(data, outfile)
 
     nickname = request.POST.get("nickname")
     if nickname == "":
         nickname = "player_"
         number = str(random.randint(103, 138))
         nickname = nickname+number
+        
+    data_render = {"nickname": nickname}
 
-    data = {"nickname": nickname}
-
-    return render(request, "index.html", context = data)
+    return render(request, "index.html", context = data_render)

@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'game_project']
+    'game_project',
+    'login_score']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

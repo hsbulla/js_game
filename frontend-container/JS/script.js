@@ -12,8 +12,18 @@ scene.createDefaultEnvironment({
     cameraContrast: 1.7,
     cameraExposure: 1.1
 });
+//Создание фона
+let skybox = new BABYLON.MeshBuilder.CreateBox('skyBox',{size:1000}, scene);
+let skyboxMaterial = new BABYLON.StandardMaterial('skyBox', scene);
+skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture(pathToImage_background, scene);
+skyboxMaterial.reflectionTexture.coordinateMode = BABYLON.Texture.SKYBOX_MODE;
+skyboxMaterial.backFaceCulling = false;
+skybox.material = skyboxMaterial;
+
+
+
 //Создание камеры
-let camera = new BABYLON.FreeCamera('camera', new BABYLON.Vector3(0, 10, -15), scene);
+let camera = new BABYLON.FreeCamera('camera', new BABYLON.Vector3(0, 5, -30), scene);
 camera.setTarget(new BABYLON.Vector3(0, 0, 0));
 //Создание света - точечный свет
 let light = new BABYLON.PointLight('light', new BABYLON.Vector3(10, 10, 0), scene);
@@ -73,9 +83,10 @@ const CreateBox = (xPos, zPos) => {
         depth: 1
     }, scene);
     box.position = new BABYLON.Vector3(xPos, 0.6, 3 + zPos) //Координаты
-    box.material = new BABYLON.StandardMaterial('material', scene);
-    box.material.emissiveColor = new BABYLON.Color3(0, 0, 0);
-
+    let boxMaterial = new BABYLON.StandardMaterial('marerial', scene);
+    boxMaterial.emissiveTexture = new BABYLON.Texture(pathToImage_obstacle); 
+    box.material = boxMaterial;
+    box.receiveShadows = true;
     box.physicsImpostor = new BABYLON.PhysicsImpostor(
         box,
         BABYLON.PhysicsImpostor.BoxImpostor,
@@ -270,14 +281,16 @@ window.addEventListener('keydown', (event) => {//Управление стрел
     window.location.reload();
 }
 });
-
+let speed = 7
 window.addEventListener('keyup', () => {
     Garry.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0, 0, 10));
-    if (score >= '5') {
-        Garry.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0, 0, 11)); // Если очков больше 5 мяч ускоряется
+    if (score % 10 == 0) {
+        speed = speed + 1;
     }
+    Garry.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0, 0, speed));// Если очков больше 5 мяч ускоряется
     Garry.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0, 0, 0));
+    console.log(speed);
 });
 window.addEventListener('beforeinstallprompt', (event) => {
     event.preventDefault();
-});
+}); 
