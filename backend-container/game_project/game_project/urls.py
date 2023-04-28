@@ -20,8 +20,6 @@ from login_score import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.login_score),
-    path('play', views.login_request),
-    path('accounts/', include('django.contrib.auth.urls')),
-    path('admin_custom_launcher', views.admin_custom_launcher)
+    path('play', views.login_request)
 ]
 
