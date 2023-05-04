@@ -32,32 +32,25 @@ def login_score(request):
 
 def login_request(request):
 
-    custom_game_elements = custom_game.objects.all()
-    for elements in custom_game_elements:
-        custom_game_elements_platforms = elements.platforms
-        custom_game_elements_backgrounds = elements.backgrounds
-        custom_game_elements_obstacle = elements.obstacle
-
-    if custom_game_elements_platforms == "platform_1":
-        static_platform = "img/platform/platform_1.png"
-    if custom_game_elements_platforms == "platform_2":
-        static_platform = "img/platform/platform_3.png"
-    if custom_game_elements_platforms == "platform_3":
-        static_platform = "img/platform/platform_3.png"
-    
-    if custom_game_elements_backgrounds == "background_1":
-        static_background = "img/background/background_1/background_1"
-    if custom_game_elements_backgrounds == "background_2":
-        static_background = "img/background/background_2/background_2"
-    if custom_game_elements_backgrounds == "background_3":
-        static_background = "img/background/background_2/background_2"
-
-    if custom_game_elements_obstacle == "obstacle_1":
-        static_obstacle = "img/obstacle/obstacle_1.jpg"
-    if custom_game_elements_obstacle == "obstacle_2":
-        static_obstacle = "img/obstacle/obstacle_2.jpg"
-    if custom_game_elements_obstacle == "obstacle_3":
-        static_obstacle = "img/obstacle/obstacle_2.jpg"
+    static_platform_mappings = {
+        "platform_1": "img/platform/platform_1.png",
+        "platform_2": "img/platform/platform_3.png",
+        "platform_3": "img/platform/platform_3.png"
+    }
+    static_background_mappings = {
+        "background_1": "img/background/background_1/background_1",
+        "background_2": "img/background/background_2/background_2",
+        "background_3": "img/background/background_2/background_2"
+    }
+    static_obstacle_mappings = {
+        "obstacle_1": "img/obstacle/obstacle_1.jpg",
+        "obstacle_2": "img/obstacle/obstacle_2.jpg",
+        "obstacle_3": "img/obstacle/obstacle_2.jpg"
+    }
+    for elements in custom_game.objects.all():
+        static_platform = static_platform_mappings.get(elements.platforms, "")
+        static_background = static_background_mappings.get(elements.backgrounds, "")
+        static_obstacle = static_obstacle_mappings.get(elements.obstacle, "")
 
     nickname = request.POST.get("nickname")
     if nickname == "":
