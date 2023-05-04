@@ -37,9 +37,27 @@ def login_request(request):
         custom_game_elements_platforms = elements.platforms
         custom_game_elements_backgrounds = elements.backgrounds
         custom_game_elements_obstacle = elements.obstacle
-    data = {"platform": custom_game_elements_platforms, "background": custom_game_elements_backgrounds, "obstacle": custom_game_elements_obstacle} 
-    with open('../../frontend-container/JSON/api-container.json', 'w') as outfile:
-        json.dump(data, outfile)
+
+    if custom_game_elements_platforms == "platform_1":
+        static_platform = "img/platform/platform_1.png"
+    if custom_game_elements_platforms == "platform_2":
+        static_platform = "img/platform/platform_3.png"
+    if custom_game_elements_platforms == "platform_3":
+        static_platform = "img/platform/platform_3.png"
+    
+    if custom_game_elements_backgrounds == "background_1":
+        static_background = "img/background/background_1/background_1"
+    if custom_game_elements_backgrounds == "background_2":
+        static_background = "img/background/background_2/background_2"
+    if custom_game_elements_backgrounds == "background_3":
+        static_background = "img/background/background_2/background_2"
+
+    if custom_game_elements_obstacle == "obstacle_1":
+        static_obstacle = "img/obstacle/obstacle_1.jpg"
+    if custom_game_elements_obstacle == "obstacle_2":
+        static_obstacle = "img/obstacle/obstacle_2.jpg"
+    if custom_game_elements_obstacle == "obstacle_3":
+        static_obstacle = "img/obstacle/obstacle_2.jpg"
 
     nickname = request.POST.get("nickname")
     if nickname == "":
@@ -47,6 +65,6 @@ def login_request(request):
         number = str(random.randint(103, 138))
         nickname = nickname+number
         
-    data_render = {"nickname": nickname}
+    data_render = {"nickname": nickname, "static_platform": static_platform, "static_background": static_background, "static_obstacle": static_obstacle}
 
     return render(request, "index.html", context = data_render)
