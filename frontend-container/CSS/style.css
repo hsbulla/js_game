@@ -8,6 +8,7 @@ body,
     height: 100vh;
     overflow: hidden;
     font-family: 'Black Ops One', cursive;
+    color: aliceblue;
     -webkit-user-select:none;
      user-select: none;
 }
@@ -35,9 +36,7 @@ body,
 
 #score {
     top: -6vh;
-    left: 2vh;
-    width: 100%;
-    text-align: left;
+    right: 49%;
     font-size: 7vh;
 }
 /* GAME OVER SCREEN */
@@ -69,6 +68,66 @@ body,
     animation-duration: 3s;
     animation-iteration-count: infinite;
 }
+/* shop screen */
+
+#nav-bar, #shop-icon, #back-icon{
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+#shop-icon, #back-icon{
+    width: 6vh;
+    padding: 1vh;
+    display: none;
+}
+#shop-screen{
+    display: none;
+}
+#left-arrow, #right-arrow{
+    position: absolute;
+    top: 70vh;
+    width: 10vh;
+}
+#left-arrow{
+    left: 0;
+}
+#right-arrow{
+    right: 0;
+}
+#price-block{
+    display: flex;
+    position: absolute;
+    top: 70vh;
+    left: 0;
+    width: 40%;
+    font-size: 7vh;
+    text-align: center;
+    margin-left: 30%;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+}
+#lock-icon{
+    position: relative;
+    width: 15vh;
+    padding-bottom: 3vh;
+}
+#price-coin-img{
+    position: relative;
+    bottom: 0;
+    right: 0;
+    width: 5vh;
+}
+
+
+
+
+
+
+
+
+
+
 /* Анимации */
 @keyframes tap-info-anim {
     from{
