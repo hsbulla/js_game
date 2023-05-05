@@ -448,3 +448,13 @@ window.addEventListener('keyup', () => {
 window.addEventListener('beforeinstallprompt', (event) => {
     event.preventDefault();
 }); 
+
+let coin_last = (window.localStorage.getItem('coin'))
+var xhr = new XMLHttpRequest();
+// var json = JSON.stringify(coin_last, score_last);   //здесь вставляем и отправляем Ваши данные
+var json = JSON.stringify({"coin" : coin_last});   //здесь вставляем и отправляем Ваши данные
+xhr.open("POST", '', true)
+xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+// Отсылаем объект в формате JSON и с Content-Type application/json
+xhr.send(json);
+

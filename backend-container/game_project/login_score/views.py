@@ -57,6 +57,11 @@ def login_request(request):
         nickname = "player_"
         number = str(random.randint(103, 138))
         nickname = nickname+number
+
+    if request.method == 'POST':
+        data_json = json.loads(request.body)  #получаете свои данные в формате строки и обрабатываете
+        coin = data_json
+        print(coin)
         
     data_render = {"nickname": nickname, "static_platform": static_platform, "static_background": static_background, "static_obstacle": static_obstacle}
 
