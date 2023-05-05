@@ -32,14 +32,25 @@ def login_score(request):
 
 def login_request(request):
 
-    custom_game_elements = custom_game.objects.all()
-    for elements in custom_game_elements:
-        custom_game_elements_platforms = elements.platforms
-        custom_game_elements_backgrounds = elements.backgrounds
-        custom_game_elements_obstacle = elements.obstacle
-    data = {"platform": custom_game_elements_platforms, "background": custom_game_elements_backgrounds, "obstacle": custom_game_elements_obstacle} 
-    with open('../../frontend-container/JSON/api-container.json', 'w') as outfile:
-        json.dump(data, outfile)
+    static_platform_mappings = {
+        "platform_1": "img/platform/platform_1.png",
+        "platform_2": "img/platform/platform_3.png",
+        "platform_3": "img/platform/platform_3.png"
+    }
+    static_background_mappings = {
+        "background_1": "img/background/background_1/background_1",
+        "background_2": "img/background/background_2/background_2",
+        "background_3": "img/background/background_2/background_2"
+    }
+    static_obstacle_mappings = {
+        "obstacle_1": "img/obstacle/obstacle_1.jpg",
+        "obstacle_2": "img/obstacle/obstacle_2.jpg",
+        "obstacle_3": "img/obstacle/obstacle_2.jpg"
+    }
+    for elements in custom_game.objects.all():
+        static_platform = static_platform_mappings.get(elements.platforms, "")
+        static_background = static_background_mappings.get(elements.backgrounds, "")
+        static_obstacle = static_obstacle_mappings.get(elements.obstacle, "")
 
     nickname = request.POST.get("nickname")
     if nickname == "":
@@ -47,6 +58,6 @@ def login_request(request):
         number = str(random.randint(103, 138))
         nickname = nickname+number
         
-    data_render = {"nickname": nickname}
+    data_render = {"nickname": nickname, "static_platform": static_platform, "static_background": static_background, "static_obstacle": static_obstacle}
 
     return render(request, "index.html", context = data_render)
