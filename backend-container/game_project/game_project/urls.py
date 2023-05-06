@@ -20,6 +20,6 @@ from login_score import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.login_score),
-    path('play', views.login_request)
+    path('play', views.login_request),
+    path('api_response', views.api_response)
 ]
-

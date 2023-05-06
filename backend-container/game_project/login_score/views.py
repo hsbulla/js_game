@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse, HttpResponseRedirect
 from login_score import utils
 from .models import custom_game
 import random, json
@@ -30,6 +30,8 @@ def login_score(request):
     
     return render(request, "base.html", context= data) 
 
+
+
 def login_request(request):
 
     static_platform_mappings = {
@@ -57,7 +59,23 @@ def login_request(request):
         nickname = "player_"
         number = str(random.randint(103, 138))
         nickname = nickname+number
+
+    is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+    if is_ajax:
+        if request.method == 'GET':
+            coin_DB = 100
+            best_score_DB = 40
+            return JsonResponse({'coin_DB':  coin_DB,'best_score_DB': best_score_DB})
+        return JsonResponse({'status': 'Invalid request'}, status=400)
         
     data_render = {"nickname": nickname, "static_platform": static_platform, "static_background": static_background, "static_obstacle": static_obstacle}
 
     return render(request, "index.html", context = data_render)
+
+
+def api_response(request):
+        if request.method == 'POST':
+            data_json = json.loads(request.body)  #получаете свои данные в формате строки и обрабатываете
+            coin = data_json
+            print(coin)
+        return HttpResponseRedirect('/')

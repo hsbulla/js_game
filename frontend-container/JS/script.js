@@ -1,3 +1,15 @@
+fetch('', {
+    method: "GET",
+    headers: {
+      "X-Requested-With": "XMLHttpRequest",
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    var coin_DB = data.coin_DB
+    var best_score_DB = data.best_score_DB
+
+    
 //Создание мира
 let canvas = window.document.querySelector('#render-canvas');
 
@@ -39,6 +51,7 @@ light.intensity = 0.2;
 
 //Создание генератора теней
 let shadowGenerator = new BABYLON.ShadowGenerator(1024, light);
+
 
 let ghghgh = 0;
 let ghgh = 0;
@@ -641,3 +654,15 @@ window.addEventListener('keyup', () => {
 window.addEventListener('beforeinstallprompt', (event) => {
     event.preventDefault();
 }); 
+
+
+var xhr = new XMLHttpRequest();
+var nickname_to_DB = document.getElementById('nickname').textContent;
+var coin_to_DB = window.localStorage.getItem('coin')
+var json = JSON.stringify({"coin" : coin_to_DB, "nickname_to_DB" : nickname_to_DB});   
+xhr.open("POST", 'api_response', true)
+xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+xhr.send(json);
+
+
+});
