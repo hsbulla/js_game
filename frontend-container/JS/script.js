@@ -193,7 +193,6 @@ const CreateBoxRow = (zPos) => { //Этим мы обозначаем ряд п�
 }
 
 
-
 //Создание героя и материала для него
 const CreateGarry = (textureNum, needPhysics = true) => {
     let Garry = new BABYLON.MeshBuilder.CreateSphere('sphere', {
@@ -252,6 +251,7 @@ let shopState = ['1', '0', '0', '0', '0'];
 let priceArray = [90, 100, 110, 4000];
 let activeTexture = 0;
 let demoPos = 0;
+let chance = Math.random();
 
 //Функции
 const updatePriceBlock = () => {
@@ -311,6 +311,8 @@ const deleteGameObject = () => {
     clearArray(pointArray, false);
 }
 const createGameObjects = () => {
+    ghghgh = 0;
+    ghgh = 0;
     for (let i = 0; i < 9; i++) {
         createPlatform(i * 6);
         if (i === 0) continue;
@@ -384,6 +386,62 @@ const newRoadBlock = (zPos) => {
 }
 
 
+const newRoadBlock2 = (zPos) => {
+    if (score <= 1) {
+        createPlatform(zPos * 6)
+        ghghgh = 0;
+    } else if (score < 5 && score > 1) {
+        createPlatform2(zPos * 6);
+        ghghgh = ghghgh - 0.6;
+    } else if (score >= 5 && score <= 5) {
+        ghghgh = ghghgh + 0.2;
+        createPlatform(zPos * 6);
+    } else if ((score < 10 && score > 5)) {
+        createPlatform1(zPos * 6);
+        ghghgh = ghghgh + 0.6;
+    } else if (score < 18 && score > 14) {
+        createPlatform1(zPos * 6);
+        ghghgh = ghghgh + 0.6;
+    } else if (score >= 18 && score <= 18) {
+        ghghgh = ghghgh - 0.2;
+        createPlatform(zPos * 6);
+    } else if ((score < 22 && score > 18)) {
+        createPlatform2(zPos * 6);
+        ghghgh = ghghgh - 0.6;
+    }
+    else {
+        ghghgh = 0
+        createPlatform(zPos * 6);
+    }
+    if (score <= 1) {
+        ghgh = 0;
+        CreateBoxRow(zPos * 6);
+    } else if (score < 5 && score > 1) {
+        CreateBoxRow(zPos * 6);
+        ghgh = ghgh - 0.45;
+    } else if (score >= 5 && score <= 5) {
+        ghgh = ghgh + 0.5;
+        CreateBoxRow(zPos * 6);
+    }
+    else if ((score < 10 && score > 5)) {
+        CreateBoxRow(zPos * 6);
+        ghgh = ghgh + 0.35;
+    } else if (score < 18 && score > 14) {
+        CreateBoxRow(zPos * 6);
+        ghgh = ghgh + 0.45;
+    } else if (score >= 18 && score <= 18) {
+        ghgh = ghgh - 0.5;
+        CreateBoxRow(zPos * 6);
+    }
+    else if ((score < 22 && score > 18)) {
+        CreateBoxRow(zPos * 6);
+        ghgh = ghgh - 0.35;
+    }
+    else {
+        ghgh = 0;
+        CreateBoxRow(zPos * 6);
+    }
+}
 
 
 
@@ -427,6 +485,8 @@ createGameObjects();
 //Встроенные функции Babylon.js
 
 
+
+console.log (chance);
 scene.registerBeforeRender(() => { //Проверка не столкнулся ли мяч с препядствиями  
     if (Garry.getAbsolutePosition().y <= 0) setgameOverScreen();
     for (let i = 0; i < boxArray.length; i++) {
@@ -434,6 +494,7 @@ scene.registerBeforeRender(() => { //Проверка не столкнулся 
             boxArray[i].material.emissiveColor = new BABYLON.Color3(0.5, 0, 0);
             ghghgh = 0;
             ghgh = 0;
+            chance = Math.random();
             setgameOverScreen();
         }
     }
@@ -451,8 +512,14 @@ scene.registerBeforeRender(() => { //Проверка не столкнулся 
             scoreInfo.innerText = score;
             score++;
             pointArray.splice(i, 1); //При первом столкновении невидимый куб удаляется
-            if (pointArray.length <= 9) {
+            if (pointArray.length <= 9){
+                console.log(chance);
+                if (chance <= 0.5){
+                    console.log(chance);
                 newRoadBlock((pointArray[pointArray.length - 1].z + 3) / 6);
+                }else{
+                newRoadBlock2((pointArray[pointArray.length - 1].z + 3) / 6);
+                } 
             }
         }
     }
@@ -538,9 +605,6 @@ window.addEventListener('keypress', (event) => {//Управление WASD
         createGameObjects();
         playScreen.style.display = 'block';
         state = PLAY;
-        ghghgh = 0;
-        ghgh = 0;
-
     }
 });
 window.addEventListener('keydown', (event) => {//Управление стрелкой
@@ -563,8 +627,6 @@ window.addEventListener('keydown', (event) => {//Управление стрел
         createGameObjects();
         playScreen.style.display = 'block';
         state = PLAY;
-        ghghgh = 0;
-        ghgh = 0;
     }
 });
 window.addEventListener('keyup', () => {
