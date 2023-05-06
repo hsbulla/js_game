@@ -10,6 +10,7 @@ fetch(`?nikname_get=${nikname_get}`, {
 var coin_DB = data.coin_DB
 var best_score_DB = data.best_score_DB
 
+
 //Создание мира
 let canvas = window.document.querySelector('#render-canvas');
 
@@ -654,9 +655,9 @@ window.addEventListener('beforeinstallprompt', (event) => {
 
 
 var xhr = new XMLHttpRequest();
-var nickname_to_DB = document.getElementById('nickname').textContent;
-var coin_to_DB = window.localStorage.getItem('coin')
-var json = JSON.stringify({"coin" : coin_to_DB, "nickname_to_DB" : nickname_to_DB});   
+var nickname_post = document.getElementById('nickname').textContent;
+var coin_from_local_storage = window.localStorage.getItem('coin')
+var json = JSON.stringify({"nickname_post" : nickname_post , "coin_DB" : coin_DB, "coin_from_local_storage" : coin_from_local_storage});   
 xhr.open("POST", 'api_response', true)
 xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
 xhr.send(json);
