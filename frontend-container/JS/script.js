@@ -1,15 +1,15 @@
-fetch('', {
-    method: "GET",
-    headers: {
-      "X-Requested-With": "XMLHttpRequest",
-    }
-  })
-  .then(response => response.json())
-  .then(data => {
-    var coin_DB = data.coin_DB
-    var best_score_DB = data.best_score_DB
+let nikname_get = document.getElementById('nickname').textContent;
+fetch(`?nikname_get=${nikname_get}`, {
+  method: "GET",
+  headers: {
+    "X-Requested-With": "XMLHttpRequest",
+  }
+})
+.then(response => response.json())
+.then(data => {
+var coin_DB = data.coin_DB
+var best_score_DB = data.best_score_DB
 
-    
 //Создание мира
 let canvas = window.document.querySelector('#render-canvas');
 
@@ -499,7 +499,6 @@ createGameObjects();
 
 
 
-console.log (chance);
 scene.registerBeforeRender(() => { //Проверка не столкнулся ли мяч с препядствиями  
     if (Garry.getAbsolutePosition().y <= 0) setgameOverScreen();
     for (let i = 0; i < boxArray.length; i++) {
@@ -526,9 +525,7 @@ scene.registerBeforeRender(() => { //Проверка не столкнулся 
             score++;
             pointArray.splice(i, 1); //При первом столкновении невидимый куб удаляется
             if (pointArray.length <= 9){
-                console.log(chance);
                 if (chance <= 0.5){
-                    console.log(chance);
                 newRoadBlock((pointArray[pointArray.length - 1].z + 3) / 6);
                 }else{
                 newRoadBlock2((pointArray[pointArray.length - 1].z + 3) / 6);
