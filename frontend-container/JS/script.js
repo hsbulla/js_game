@@ -19,13 +19,12 @@ scene.createDefaultEnvironment({
 
 
 //Создание фона
-let skybox = new BABYLON.MeshBuilder.CreateBox('skyBox',{size:1000}, scene);
+let skybox = new BABYLON.MeshBuilder.CreateBox('skyBox', { size: 1000 }, scene);
 let skyboxMaterial = new BABYLON.StandardMaterial('skyBox', scene);
 skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture(pathToImage_background, scene);
 skyboxMaterial.reflectionTexture.coordinateMode = BABYLON.Texture.SKYBOX_MODE;
 skyboxMaterial.backFaceCulling = false;
 skybox.material = skyboxMaterial;
-
 
 
 //Создание камеры
@@ -41,7 +40,8 @@ light.intensity = 0.2;
 //Создание генератора теней
 let shadowGenerator = new BABYLON.ShadowGenerator(1024, light);
 
-
+let ghghgh = 0;
+let ghgh = 0;
 //Создание платформы и материала для неё
 let platformArray = [];
 const createPlatform = (zPos) => {
@@ -52,7 +52,7 @@ const createPlatform = (zPos) => {
         wrap: true
     }, scene);
     let boxMaterial = new BABYLON.StandardMaterial('marerial', scene);
-    boxMaterial.emissiveTexture = new BABYLON.Texture(pathToImage_platform); 
+    boxMaterial.emissiveTexture = new BABYLON.Texture(pathToImage_platform);
     platform.material = boxMaterial;
     platform.receiveShadows = true;
     platform.physicsImpostor = new BABYLON.PhysicsImpostor(
@@ -61,9 +61,60 @@ const createPlatform = (zPos) => {
         mass: 0
     },
         scene);
+    platform.position.x = ghghgh;
     platform.position.z = zPos;
     platformArray.push(platform);
 }
+const createPlatform1 = (zPos) => {
+    let platform = new BABYLON.MeshBuilder.CreateBox('box', {
+        width: 6,
+        height: 0.1,
+        depth: 6,
+        wrap: true
+    }, scene);
+    platform.addRotation(0, 0.1, 0);
+    let boxMaterial = new BABYLON.StandardMaterial('marerial', scene);
+    boxMaterial.emissiveTexture = new BABYLON.Texture(pathToImage_platform);
+    platform.material = boxMaterial;
+    platform.receiveShadows = true;
+    platform.physicsImpostor = new BABYLON.PhysicsImpostor(
+        platform,
+        BABYLON.PhysicsImpostor.BoxImpostor, { //Физические свойства
+        mass: 0
+    },
+        scene);
+    platform.position.x = ghghgh;
+    platform.position.z = zPos;
+    platformArray.push(platform);
+}
+const createPlatform2 = (zPos) => {
+    let platform = new BABYLON.MeshBuilder.CreateBox('box', {
+        width: 6,
+        height: 0.1,
+        depth: 6,
+        wrap: true
+    }, scene);
+    // platform.position = new BABYLON.Vector3(0, 0, zPos) 
+    platform.addRotation(0, -0.1, 0);
+    let boxMaterial = new BABYLON.StandardMaterial('marerial', scene);
+    boxMaterial.emissiveTexture = new BABYLON.Texture(pathToImage_platform);
+    platform.material = boxMaterial;
+    platform.receiveShadows = true;
+    platform.physicsImpostor = new BABYLON.PhysicsImpostor(
+        platform,
+        BABYLON.PhysicsImpostor.BoxImpostor, { //Физические свойства
+        mass: 0
+    },
+        scene);
+    platform.position.x = ghghgh;
+    platform.position.z = zPos;
+    platformArray.push(platform);
+
+}
+
+
+
+
 
 // Создание монетки
 let coinArray = [];
@@ -82,7 +133,7 @@ const createCoin = (pos) => {
             coinArray.push(coin);
             shopIcon.style.display = 'block';
         }
-        
+
     )
 }
 
@@ -99,7 +150,7 @@ const CreateBox = (xPos, zPos) => {
     }, scene);
     box.position = new BABYLON.Vector3(xPos, 0.6, 3 + zPos) //Координаты
     let boxMaterial = new BABYLON.StandardMaterial('marerial', scene);
-    boxMaterial.emissiveTexture = new BABYLON.Texture(pathToImage_obstacle); 
+    boxMaterial.emissiveTexture = new BABYLON.Texture(pathToImage_obstacle);
     box.material = boxMaterial;
     box.receiveShadows = true;
     box.physicsImpostor = new BABYLON.PhysicsImpostor(
@@ -113,6 +164,8 @@ const CreateBox = (xPos, zPos) => {
     box.receiveShadows = true;
     boxArray.push(box);
 }
+
+let ugu = 0
 const CreateBoxRow = (zPos) => { //Этим мы обозначаем ряд препядствий
     let rand = Math.floor(Math.random() * 3) //для коробки, которая не отображается
     while (rand === lastRand) {
@@ -120,19 +173,22 @@ const CreateBoxRow = (zPos) => { //Этим мы обозначаем ряд п�
     }
     lastRand = rand;
     for (let i = 0; i < 3; i++) {
+        ugu = 0;
+        ugu = ugu + i + ghgh;
         if (i === rand) {
-            if (zPos === 30){
-                createCoin(new BABYLON.Vector3((i * 2) - 2, 1, 3 + zPos))
+            if (zPos === 30) {
+                createCoin(new BABYLON.Vector3((ugu * 2) - 2, 1, 3 + zPos))
             }
             else if (Math.random() < 0.65) {   //Создание монетки с шансом 65% между препядствиями
-                createCoin(new BABYLON.Vector3((i * 2) - 2, 1, 3 + zPos))
+                createCoin(new BABYLON.Vector3((ugu * 2) - 2, 1, 3 + zPos))
             }
 
-            pointArray.push(new BABYLON.Vector3((i * 2) - 2, 0, 3 + zPos))    //создание невидимых точек
+            pointArray.push(new BABYLON.Vector3((ugu * 2) - 2, 0, 3 + zPos))    //создание невидимых точек
             continue;
 
         };
-        CreateBox((i * 2 - 2), zPos);
+        CreateBox((ugu * 2 - 2), zPos);
+        ugu = 0;
     }
 }
 
@@ -145,28 +201,22 @@ const CreateGarry = (textureNum, needPhysics = true) => {
     }, scene);
     Garry.position.y = 0.6;
     let GarryMaterial = new BABYLON.StandardMaterial('kosh5', scene);
-    // GarryMaterial.diffuseColor = new BABYLON.Color3(1, 1, 1);
-    // GarryMaterial.specularPower = 64;
-    // GarryMaterial.emissiveColor = new BABYLON.Color3(0.1, 0.1, 0.1);
-    GarryMaterial.emissiveTexture = new BABYLON.Texture(`${x}${textureNum}.jpg`, scene);
-    // GarryMaterial.emissiveFresnelParameters = new BABYLON.FresnelParameters();
-    // GarryMaterial.emissiveFresnelParameters.bias = 0.3;
-    // GarryMaterial.emissiveFresnelParameters.power = 2;
-    // GarryMaterial.emissiveFresnelParameters.leftColor = BABYLON.Color3.Red();
-    // GarryMaterial.emissiveFresnelParameters.rightColor = BABYLON.Color3.Blue();
+    GarryMaterial.emissiveTexture = new BABYLON.Texture(`${pathToImage_shop}${textureNum}.jpg`, scene);
     Garry.material = GarryMaterial;
     shadowGenerator.getShadowMap().renderList.push(Garry);
-    if(needPhysics){ Garry.physicsImpostor = new BABYLON.PhysicsImpostor(
-        Garry,
-        BABYLON.PhysicsImpostor.SphereImpostor, { //Присваеваем объекту физические свойства
-        mass: 1,
-        friction: 5 //трение
-    },
-        scene
-    
-    )};
+    if (needPhysics) {
+        Garry.physicsImpostor = new BABYLON.PhysicsImpostor(
+            Garry,
+            BABYLON.PhysicsImpostor.SphereImpostor, { //Присваеваем объекту физические свойства
+            mass: 1,
+            friction: 5 //трение
+        },
+            scene
+
+        )
+    };
     return Garry;
-    
+
 }
 
 
@@ -199,22 +249,22 @@ let speed = 8;
 let demoArray = [];
 let demoTimer = null;
 let shopState = ['1', '0', '0', '0', '0'];
-let priceArray = [30, 4000, 50, 60, 70];
+let priceArray = [90, 100, 110, 4000];
 let activeTexture = 0;
 let demoPos = 0;
 
 //Функции
 const updatePriceBlock = () => {
     (shopState[demoPos] === '1')
-    ? priceBlock.style.opacity = '0'
-    :priceBlock.style.opacity = '1';
+        ? priceBlock.style.opacity = '0'
+        : priceBlock.style.opacity = '1';
     window.document.querySelector('#price').innerText = priceArray[demoPos];
 }
 const arrowClick = (dir) => {
     demoPos += dir;
-    if (demoPos < 0) demoPos = 4
-    else if (demoPos > 4) demoPos = 0;
-    demoArray[0].material.emissiveTexture = new BABYLON.Texture(`${x}${demoPos}.jpg`,scene);
+    if (demoPos < 0) demoPos = 3
+    else if (demoPos > 3) demoPos = 0;
+    demoArray[0].material.emissiveTexture = new BABYLON.Texture(`${pathToImage_shop}${demoPos}.jpg`, scene);
     updatePriceBlock();
 }
 const saveShopState = () => {
@@ -223,14 +273,14 @@ const saveShopState = () => {
 }
 const loadShopState = () => {
     shopState = (window.localStorage.getItem('shopState'))
-    ? window.localStorage.getItem('shopState').split(',')
-    :shopState;
+        ? window.localStorage.getItem('shopState').split(',')
+        : shopState;
     activeTexture = (window.localStorage.getItem('activeTexture'))
-    ? Number.parseInt(window.localStorage.getItem('activeTexture'))
-    :activeTexture;
+        ? Number.parseInt(window.localStorage.getItem('activeTexture'))
+        : activeTexture;
 }
 const clearArray = (Array, isMesh = true) => {
-    if(isMesh) Array.map(elem => elem.dispose());
+    if (isMesh) Array.map(elem => elem.dispose());
     while (Array.length) Array.pop();
 }
 const deleteDemoObject = () => {
@@ -238,20 +288,20 @@ const deleteDemoObject = () => {
     clearInterval(demoTimer);
 }
 const createDemoObjects = () => {
-    for(let i = 0; i < 2;i++){
+    for (let i = 0; i < 2; i++) {
         let Garry = CreateGarry(activeTexture, false);
-        Garry.position = new BABYLON.Vector3(0, i*4, i*2);
+        Garry.position = new BABYLON.Vector3(0, i * 4, i * 2);
         Garry.scaling = new BABYLON.Vector3(2, 2, 2);
         demoArray.push(Garry);
     }
-    demoTimer = setInterval(()=>{
+    demoTimer = setInterval(() => {
         demoArray[1].rotate(
-            new BABYLON.Vector3(-1, 0 , -1),
-            Math.PI * (engine.getDeltaTime()/1000),
+            new BABYLON.Vector3(-1, 0, -1),
+            Math.PI * (engine.getDeltaTime() / 1000),
             BABYLON.Space.WORLD
         )
     }, 20);
-updatePriceBlock();
+    updatePriceBlock();
 }
 const deleteGameObject = () => {
     Garry.dispose();
@@ -271,21 +321,83 @@ const createGameObjects = () => {
     scoreInfo.innerText = `${score}`;
     speed = 8;
 }
-const newRoadBlock = (zPos) => {
-    createPlatform(zPos*6);
-    CreateBoxRow(zPos*6);
 
+
+
+
+
+const newRoadBlock = (zPos) => {
+    if (score <= 1) {
+        createPlatform(zPos * 6)
+        ghghgh = 0;
+    } else if (score < 5 && score > 1) {
+        createPlatform1(zPos * 6);
+        ghghgh = ghghgh + 0.6;
+    } else if (score >= 5 && score <= 5) {
+        ghghgh = ghghgh - 0.2;
+        createPlatform(zPos * 6);
+    } else if ((score < 10 && score > 5)) {
+        createPlatform2(zPos * 6);
+        ghghgh = ghghgh - 0.6;
+    } else if (score < 18 && score > 14) {
+        createPlatform2(zPos * 6);
+        ghghgh = ghghgh - 0.6;
+    } else if (score >= 18 && score <= 18) {
+        ghghgh = ghghgh + 0.2;
+        createPlatform(zPos * 6);
+    } else if ((score < 22 && score > 18)) {
+        createPlatform1(zPos * 6);
+        ghghgh = ghghgh + 0.6;
+    }
+    else {
+        ghghgh = 0
+        createPlatform(zPos * 6);
+    }
+    if (score <= 1) {
+        ghgh = 0;
+        CreateBoxRow(zPos * 6);
+    } else if (score < 5 && score > 1) {
+        CreateBoxRow(zPos * 6);
+        ghgh = ghgh + 0.45;
+    } else if (score >= 5 && score <= 5) {
+        ghgh = ghgh - 0.5;
+        CreateBoxRow(zPos * 6);
+    }
+    else if ((score < 10 && score > 5)) {
+        CreateBoxRow(zPos * 6);
+        ghgh = ghgh - 0.35;
+    } else if (score < 18 && score > 14) {
+        CreateBoxRow(zPos * 6);
+        ghgh = ghgh - 0.45;
+    } else if (score >= 18 && score <= 18) {
+        ghgh = ghgh + 0.5;
+        CreateBoxRow(zPos * 6);
+    }
+    else if ((score < 22 && score > 18)) {
+        CreateBoxRow(zPos * 6);
+        ghgh = ghgh + 0.35;
+    }
+    else {
+        ghgh = 0;
+        CreateBoxRow(zPos * 6);
+    }
 }
+
+
+
+
+
+
 const saveCoin = () => {
     window.localStorage.setItem('coin', coin);
 }
 const loadCoin = () => {
-        coin = (window.localStorage.getItem('coin'))
-            ? window.localStorage.getItem('coin')
-            : 0
-            ;
-        coininfo.innerText = coin;
-    }
+    coin = (window.localStorage.getItem('coin'))
+        ? window.localStorage.getItem('coin')
+        : 0
+        ;
+    coininfo.innerText = coin;
+}
 const saveBestScore = () => {
     window.localStorage.setItem('bestScore', score);
 }
@@ -293,14 +405,14 @@ const loadBestScore = () => {
     return (window.localStorage.getItem('bestScore'))
         ? window.localStorage.getItem('bestScore')
         : 0
-    ;
+        ;
 }
 const setgameOverScreen = () => { //Окно GAME OVER
     state = GAME_OVER;
-    playScreen.style.display = 'none'; 
+    playScreen.style.display = 'none';
     gameOverScreen.style.display = 'block';
     let bestScore = loadBestScore();
-    if (score > bestScore){
+    if (score > bestScore) {
         saveBestScore();
         bestScore = score;
     }
@@ -313,11 +425,15 @@ createGameObjects();
 
 
 //Встроенные функции Babylon.js
+
+
 scene.registerBeforeRender(() => { //Проверка не столкнулся ли мяч с препядствиями  
-    if(Garry.getAbsolutePosition().y <= 0) setgameOverScreen();
+    if (Garry.getAbsolutePosition().y <= 0) setgameOverScreen();
     for (let i = 0; i < boxArray.length; i++) {
         if (Garry.intersectsMesh(boxArray[i], true)) {
             boxArray[i].material.emissiveColor = new BABYLON.Color3(0.5, 0, 0);
+            ghghgh = 0;
+            ghgh = 0;
             setgameOverScreen();
         }
     }
@@ -335,8 +451,8 @@ scene.registerBeforeRender(() => { //Проверка не столкнулся 
             scoreInfo.innerText = score;
             score++;
             pointArray.splice(i, 1); //При первом столкновении невидимый куб удаляется
-            if (pointArray.length <= 9){
-                newRoadBlock((pointArray[pointArray.length - 1].z+3)/6);
+            if (pointArray.length <= 9) {
+                newRoadBlock((pointArray[pointArray.length - 1].z + 3) / 6);
             }
         }
     }
@@ -348,99 +464,114 @@ engine.runRenderLoop(() => {
 });
 
 
+
 //Обработчики событий
 priceBlock.addEventListener("mousedown",
-(event)=>{
-    if(shopState[demoPos] === '0'){
-        if (priceArray[demoPos] <= coin){
-            coin -= priceArray[demoPos];
-            coininfo.innerText = coin;
-            saveCoin();
-            shopState[demoPos] = '1';
+    (event) => {
+        if (shopState[demoPos] === '0') {
+            if (priceArray[demoPos] <= coin) {
+                coin -= priceArray[demoPos];
+                coininfo.innerText = coin;
+                saveCoin();
+                shopState[demoPos] = '1';
+                saveShopState();
+                updatePriceBlock();
+            }
+        } else {
+            activeTexture = demoPos;
             saveShopState();
-            updatePriceBlock();
+            demoArray[1].material.emissiveTexture = new BABYLON.Texture(`${pathToImage_shop}${activeTexture}.jpg`, scene);
         }
-    }else{
-        activeTexture = demoPos;
-        saveShopState();
-        demoArray[1].material.emissiveTexture = new BABYLON.Texture(`${x}${activeTexture}.jpg`, scene);
-    }
-})
+    })
 
 shopIcon.addEventListener("mousedown",
-      (event)=>{
+    (event) => {
         shopIcon.style.display = 'none';
         backIcon.style.display = 'block';
         playScreen.style.display = 'none';
         shopScreen.style.display = 'block';
         deleteGameObject();
         createDemoObjects();
-});
+    });
 backIcon.addEventListener("mousedown",
-      (event)=>{
+    (event) => {
         shopIcon.style.display = 'block';
         backIcon.style.display = 'none';
         playScreen.style.display = 'block';
         shopScreen.style.display = 'none';
         deleteDemoObject();
         createGameObjects();
-});
+    });
 document.addEventListener('keydown', (event) => { //кнопочка enter
     if (event.keyCode === 13) {
-        window.location.reload()
+        window.location.reload();
+        ghghgh = 0;
+        ghgh = 0;
     }
+    if (event.keyCode === 32) {
+        Garry.physicsImpostor.applyImpulse(
+            new BABYLON.Vector3(0, 17, 0),
+            Garry.getAbsolutePosition()
+        );
+    }
+
 });
 window.addEventListener('keypress', (event) => {//Управление WASD
-    if (state !== GAME_OVER){
-        
-    if (event.key == 'a' || event.key == 'A' || event.key == 'ф' || event.key == 'Ф') {
-        Garry.physicsImpostor.applyImpulse(
-            new BABYLON.Vector3(-15, 0, 0),
-            Garry.getAbsolutePosition()
-           
-        );
+    if (state !== GAME_OVER) {
+
+        if (event.key == 'a' || event.key == 'A' || event.key == 'ф' || event.key == 'Ф') {
+            Garry.physicsImpostor.applyImpulse(
+                new BABYLON.Vector3(-15, 0, 0),
+                Garry.getAbsolutePosition()
+
+            );
+        }
+        if (event.key == 'd' || event.key == 'D' || event.key == 'в' || event.key == 'В') {
+            Garry.physicsImpostor.applyImpulse(
+                new BABYLON.Vector3(15, 0, 0),
+                Garry.getAbsolutePosition()
+            );
+        }
+    } else {
+        gameOverScreen.style.display = 'none';
+        deleteGameObject();
+        createGameObjects();
+        playScreen.style.display = 'block';
+        state = PLAY;
+        ghghgh = 0;
+        ghgh = 0;
+
     }
-    if (event.key == 'd' || event.key == 'D' || event.key == 'в' || event.key == 'В') {
-        Garry.physicsImpostor.applyImpulse(
-            new BABYLON.Vector3(15, 0, 0),
-            Garry.getAbsolutePosition()
-        );
-    }
-}else{
-    gameOverScreen.style.display = 'none';
-    deleteGameObject();
-    createGameObjects();
-    playScreen.style.display = 'block';
-    state = PLAY;
-}
 });
 window.addEventListener('keydown', (event) => {//Управление стрелкой
-    if (state !== GAME_OVER){
-    if (event.key == 'ArrowLeft') {
-        Garry.physicsImpostor.applyImpulse(
-            new BABYLON.Vector3(-15, 0, 0),
-            Garry.getAbsolutePosition()
-        );
+    if (state !== GAME_OVER) {
+        if (event.key == 'ArrowLeft') {
+            Garry.physicsImpostor.applyImpulse(
+                new BABYLON.Vector3(-15, 0, 0),
+                Garry.getAbsolutePosition()
+            );
+        }
+        if (event.key == 'ArrowRight') {
+            Garry.physicsImpostor.applyImpulse(
+                new BABYLON.Vector3(15, 0, 0),
+                Garry.getAbsolutePosition()
+            );
+        }
+    } else {
+        gameOverScreen.style.display = 'none';
+        deleteGameObject();
+        createGameObjects();
+        playScreen.style.display = 'block';
+        state = PLAY;
+        ghghgh = 0;
+        ghgh = 0;
     }
-    if (event.key == 'ArrowRight') {
-        Garry.physicsImpostor.applyImpulse(
-            new BABYLON.Vector3(15, 0, 0),
-            Garry.getAbsolutePosition()
-        );
-    }
-}else{
-    gameOverScreen.style.display = 'none';
-    deleteGameObject();
-    createGameObjects();
-    playScreen.style.display = 'block';
-    state = PLAY;
-}
 });
 window.addEventListener('keyup', () => {
     Garry.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0, 0, 10));
-   
+
     if (score % 10 === 0) {
-        speed = speed + 1;
+        speed = speed +1;
     }
     Garry.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(0, 0, speed));// Если очков больше 5 мяч ускоряется
     Garry.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(0, 0, 0));
