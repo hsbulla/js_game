@@ -62,18 +62,21 @@ def login_request(request):
 
     if request.method == 'GET':
         nickname = request.GET.get('nikname_get', None)
-        print(nickname)
         coin_DB = 100
         best_score_DB = 40
-        return JsonResponse({'coin_DB':  nickname,'best_score_DB': best_score_DB})
+        return JsonResponse({'coin_DB':  coin_DB,'best_score_DB': best_score_DB})
     
     data_render = {"nickname": nickname, "static_platform": static_platform, "static_background": static_background, "static_obstacle": static_obstacle}
 
     return render(request, "index.html", context = data_render)
 
+
 def api_response(request):
         if request.method == 'POST':
-            data_json = json.loads(request.body)  #получаете свои данные в формате строки и обрабатываете
-            coin = data_json
-            print(coin)
+            data_api_to_DB = json.loads(request.body)
+            nickname = data_api_to_DB['nickname_post']
+            coin_DB = data_api_to_DB['coin_DB']
+            coin_from_local_storage = data_api_to_DB['coin_from_local_storage']
+            coin_to_DB = int(coin_from_local_storage) - int(coin_DB)
+            print(nickname, coin_to_DB)
         return HttpResponseRedirect('/')
