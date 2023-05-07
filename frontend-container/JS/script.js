@@ -275,6 +275,16 @@ const updatePriceBlock = () => {
         : priceBlock.style.opacity = '1';
     window.document.querySelector('#price').innerText = priceArray[demoPos];
 }
+
+var arrowLeft = window.document.querySelector('#left-arrow');
+arrowLeft.onclick = function() {
+    arrowClick(-1);
+}
+var arrowRight = window.document.querySelector('#right-arrow');
+arrowRight.onclick = function() {
+    arrowClick(1);
+}
+
 const arrowClick = (dir) => {
     demoPos += dir;
     if (demoPos < 0) demoPos = 3
@@ -288,8 +298,8 @@ const saveShopState = () => {
 }
 
 const loadShopState = () => {
-    shopState = (window.localStorage.getItem('shopState'))
-        ? window.localStorage.getItem('shopState').split(',')
+    shopState = shop_DB
+        ? shop_DB.split(',')
         : shopState;
     activeTexture = (window.localStorage.getItem('activeTexture'))
         ? Number.parseInt(window.localStorage.getItem('activeTexture'))
@@ -468,20 +478,15 @@ const saveCoin = () => {
     window.localStorage.setItem('coin', coin);
 }
 const loadCoin = () => {
-    coin = (window.localStorage.getItem('coin'))
-        ? window.localStorage.getItem('coin')
-        : 0
-        ;
+    coin = coin_DB
     coininfo.innerText = coin;
 }
 const saveBestScore = () => {
     window.localStorage.setItem('bestScore', score);
 }
 const loadBestScore = () => {
-    return (window.localStorage.getItem('bestScore'))
-        ? window.localStorage.getItem('bestScore')
-        : 0
-        ;
+    return best_score_DB
+
 }
 const setgameOverScreen = () => { //Окно GAME OVER
     state = GAME_OVER;

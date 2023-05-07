@@ -58,7 +58,7 @@ def login_request(request):
         if request.method == 'GET':
             nickname = request.GET.get('nikname_get', None)
             coin_DB = 100
-            best_score_DB = 40
+            best_score_DB = 2
             shop_DB = '1,1,0,0,0'
             return JsonResponse({'coin_DB':  coin_DB,'best_score_DB': best_score_DB, 'shop_DB': shop_DB})
         return JsonResponse({'status': 'Invalid request'}, status=400)
