@@ -96,7 +96,7 @@ def login_request(request):
     nicknames = [row[0] for row in cur.fetchall()]
     nickname = None
     while not nickname:
-        new_nickname = f'player_{random.randint(1, 100000)}'
+        new_nickname = f'player_{random.randint(1, 1000000)}'
         if new_nickname not in nicknames:
             nickname = new_nickname
     cur.close()
@@ -113,7 +113,7 @@ def login_request(request):
             nicknames_from_base = [row[0] for row in cur.fetchall()]
             nickname_from_base = None
             while not nickname_from_base:
-                new_nickname_from_base = f'player_{random.randint(1, 100000)}'
+                new_nickname_from_base = f'player_{random.randint(1, 1000000)}'
                 if new_nickname_from_base not in nicknames_from_base:
                     nickname_from_base = new_nickname_from_base
             cur.close()

@@ -47,7 +47,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'login_score.middleware.InvalidURLMiddleware',
+    'game_project.middleware.InvalidURLMiddleware',
     #'django.middleware.csrf.CsrfViewMiddleware',
 ]
 
