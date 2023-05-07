@@ -1,8 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse, HttpResponseRedirect
 from .models import custom_game, player_info, player_shop
-import random, json
-import sqlite3
+import random, json, sqlite3
 
 def login_score(request):
 
@@ -58,11 +57,6 @@ def login_request(request):
             nickname = request.GET.get('nikname_get', None)
             conn = sqlite3.connect('db.sqlite3')
             cursor = conn.cursor()
-
-            coin_DB = 0
-            best_score_DB = 0
-            shop_DB = '1,0,0,0,0'
-
             cursor.execute("SELECT coin, best_score FROM player_info WHERE nickname=?", (nickname,))
             if cursor.fetchone() is None: 
                 player_info_to = player_info()
@@ -70,13 +64,6 @@ def login_request(request):
                 player_info_to.coin = 0
                 player_info_to.best_score = 0
                 player_info_to.save()
-            else: 
-                result = cursor.fetchone()
-                if result:
-                    coin_DB, best_score_DB = result
-
-            cursor.execute("SELECT item1, item2, item3, item4, item5 FROM player_shop WHERE nickname=?", (nickname,))
-            if cursor.fetchone() is None: 
                 player_shop_to = player_shop()
                 player_shop_to.nickname = nickname
                 player_shop_to.item1 = 1
@@ -84,7 +71,15 @@ def login_request(request):
                 player_shop_to.item3 = 0
                 player_shop_to.item4 = 0
                 player_shop_to.item5 = 0
-            else:
+                coin_DB = 0
+                best_score_DB = 0
+                shop_DB = '1,0,0,0,0'
+            else: 
+                cursor.execute("SELECT coin, best_score FROM player_info WHERE nickname=?", (nickname,))
+                result = cursor.fetchone()
+                if result:
+                    coin_DB, best_score_DB = result
+                cursor.execute("SELECT item1, item2, item3, item4, item5 FROM player_shop WHERE nickname=?", (nickname,))
                 result_shop = cursor.fetchone()
                 if result_shop:
                     item1, item2, item3, item4, item5 = result_shop
@@ -94,18 +89,35 @@ def login_request(request):
             conn.close()
             return JsonResponse({'coin_DB':  coin_DB,'best_score_DB': best_score_DB, 'shop_DB': shop_DB})
         return JsonResponse({'status': 'Invalid request'}, status=400)
-    
-    nickname = "player_"
-    number = str(random.randint(1, 100000))
-    nickname = nickname+number
+
+    conn = sqlite3.connect('db.sqlite3')  
+    cur = conn.cursor()
+    cur.execute('SELECT nickname FROM player_info')
+    nicknames = [row[0] for row in cur.fetchall()]
+    nickname = None
+    while not nickname:
+        new_nickname = f'player_{random.randint(1, 100000)}'
+        if new_nickname not in nicknames:
+            nickname = new_nickname
+    cur.close()
+    conn.close()
+
     data_render = {"nickname": nickname, "static_platform": static_platform, "static_background": static_background, "static_obstacle": static_obstacle}    
 
     if request.method == 'POST':
         nickname_from_base = request.POST.get("nickname")
         if nickname_from_base == "":
-            nickname_from_base = "player_"
-            number = str(random.randint(1, 100000))
-            nickname_from_base = nickname_from_base+number
+            conn = sqlite3.connect('db.sqlite3')  
+            cur = conn.cursor()
+            cur.execute('SELECT nickname FROM player_info')
+            nicknames_from_base = [row[0] for row in cur.fetchall()]
+            nickname_from_base = None
+            while not nickname_from_base:
+                new_nickname_from_base = f'player_{random.randint(1, 100000)}'
+                if new_nickname_from_base not in nicknames_from_base:
+                    nickname_from_base = new_nickname_from_base
+            cur.close()
+            conn.close()
         data_render = {"nickname": nickname_from_base, "static_platform": static_platform, "static_background": static_background, "static_obstacle": static_obstacle}
 
     return render(request, "index.html", context = data_render)

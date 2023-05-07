@@ -5,14 +5,18 @@ from login_score.models import player_shop
 
 # Register your models here.
 
-@admin.register(custom_game , player_info, player_shop)
-
-class custom_gameAdmin(admin.ModelAdmin):
+class CustomGameAdmin(admin.ModelAdmin):
     pass
+    list_display = ('platforms', 'backgrounds', 'obstacle')
 
-class player_infoAdmin(admin.ModelAdmin):
-    list_display = ['nickname', 'coin', 'best_score']
+class PlayerInfoAdmin(admin.ModelAdmin):
+    list_display = ('nickname', 'coin', 'best_score')
+    list_editable = ('coin', 'best_score')
 
-class player_shopAdmin(admin.ModelAdmin):
-    list_display = ('id','nickname', 'item1', 'item2', 'item3', 'item4', 'item5')
+class PlayerShopAdmin(admin.ModelAdmin):
+    list_display = ('nickname', 'item1', 'item2', 'item3', 'item4', 'item5')
+    list_editable = ('item1', 'item2', 'item3', 'item4', 'item5')
 
+admin.site.register(player_info, PlayerInfoAdmin)
+admin.site.register(player_shop, PlayerShopAdmin)
+admin.site.register(custom_game, CustomGameAdmin)
