@@ -30,8 +30,6 @@ def login_score(request):
     
     return render(request, "base.html", context= data) 
 
-
-
 def login_request(request):
 
     static_platform_mappings = {
@@ -49,34 +47,43 @@ def login_request(request):
         "obstacle_2": "img/obstacle/obstacle_2.jpg",
         "obstacle_3": "img/obstacle/obstacle_2.jpg"
     }
+
     for elements in custom_game.objects.all():
         static_platform = static_platform_mappings.get(elements.platforms, "")
         static_background = static_background_mappings.get(elements.backgrounds, "")
         static_obstacle = static_obstacle_mappings.get(elements.obstacle, "")
 
-    nickname = request.POST.get("nickname")
-    if nickname == "":
-        nickname = "player_"
-        number = str(random.randint(103, 138))
-        nickname = nickname+number
-
-    if request.method == 'GET':
-        nickname = request.GET.get('nikname_get', None)
-        coin_DB = 100
-        best_score_DB = 40
-        return JsonResponse({'coin_DB':  coin_DB,'best_score_DB': best_score_DB})
+    is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+    if is_ajax:
+        if request.method == 'GET':
+            nickname = request.GET.get('nikname_get', None)
+            coin_DB = 100
+            best_score_DB = 40
+            return JsonResponse({'coin_DB':  coin_DB,'best_score_DB': best_score_DB})
+        return JsonResponse({'status': 'Invalid request'}, status=400)
     
-    data_render = {"nickname": nickname, "static_platform": static_platform, "static_background": static_background, "static_obstacle": static_obstacle}
+    nickname = "player_"
+    number = str(random.randint(103, 138))
+    nickname = nickname+number
+    data_render = {"nickname": nickname, "static_platform": static_platform, "static_background": static_background, "static_obstacle": static_obstacle}    
+
+    if request.method == 'POST':
+        nickname_from_base = request.POST.get("nickname")
+        if nickname_from_base == "":
+            nickname_from_base = "player_"
+            number = str(random.randint(103, 138))
+            nickname_from_base = nickname_from_base+number
+        data_render = {"nickname": nickname_from_base, "static_platform": static_platform, "static_background": static_background, "static_obstacle": static_obstacle}
 
     return render(request, "index.html", context = data_render)
-
 
 def api_response(request):
         if request.method == 'POST':
             data_api_to_DB = json.loads(request.body)
-            nickname = data_api_to_DB['nickname_post']
             coin_DB = data_api_to_DB['coin_DB']
             coin_from_local_storage = data_api_to_DB['coin_from_local_storage']
             coin_to_DB = int(coin_from_local_storage) - int(coin_DB)
-            print(nickname, coin_to_DB)
+            best_score_to_DB = data_api_to_DB['best_score_from_local_storage']
+            nickname = data_api_to_DB['nickname_post']
+            print(nickname, coin_to_DB, best_score_to_DB)
         return HttpResponseRedirect('/')
