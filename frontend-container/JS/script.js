@@ -1,5 +1,5 @@
 let nikname_get = document.getElementById('nickname').textContent;
-fetch(`?nikname_get=${nikname_get}`, {
+fetch(`?nikname_get=${nikname_get}`,{
   method: "GET",
   headers: {
     "X-Requested-With": "XMLHttpRequest",
@@ -9,6 +9,7 @@ fetch(`?nikname_get=${nikname_get}`, {
 .then(data => {
 var coin_DB = data.coin_DB
 var best_score_DB = data.best_score_DB
+var shop_DB = data.shop_DB
 
 
 //Создание мира
@@ -274,6 +275,16 @@ const updatePriceBlock = () => {
         : priceBlock.style.opacity = '1';
     window.document.querySelector('#price').innerText = priceArray[demoPos];
 }
+
+var arrowLeft = window.document.querySelector('#left-arrow');
+arrowLeft.onclick = function() {
+    arrowClick(-1);
+}
+var arrowRight = window.document.querySelector('#right-arrow');
+arrowRight.onclick = function() {
+    arrowClick(1);
+}
+
 const arrowClick = (dir) => {
     demoPos += dir;
     if (demoPos < 0) demoPos = 3
@@ -285,14 +296,17 @@ const saveShopState = () => {
     window.localStorage.setItem('shopState', shopState.join(','))
     window.localStorage.setItem('activeTexture', activeTexture);
 }
+
 const loadShopState = () => {
-    shopState = (window.localStorage.getItem('shopState'))
-        ? window.localStorage.getItem('shopState').split(',')
+    shopState = shop_DB
+        ? shop_DB.split(',')
         : shopState;
     activeTexture = (window.localStorage.getItem('activeTexture'))
         ? Number.parseInt(window.localStorage.getItem('activeTexture'))
         : activeTexture;
 }
+
+
 const clearArray = (Array, isMesh = true) => {
     if (isMesh) Array.map(elem => elem.dispose());
     while (Array.length) Array.pop();
@@ -464,20 +478,15 @@ const saveCoin = () => {
     window.localStorage.setItem('coin', coin);
 }
 const loadCoin = () => {
-    coin = (window.localStorage.getItem('coin'))
-        ? window.localStorage.getItem('coin')
-        : 0
-        ;
+    coin = coin_DB
     coininfo.innerText = coin;
 }
 const saveBestScore = () => {
     window.localStorage.setItem('bestScore', score);
 }
 const loadBestScore = () => {
-    return (window.localStorage.getItem('bestScore'))
-        ? window.localStorage.getItem('bestScore')
-        : 0
-        ;
+    return best_score_DB
+
 }
 const setgameOverScreen = () => { //Окно GAME OVER
     state = GAME_OVER;
@@ -657,7 +666,9 @@ window.addEventListener('beforeinstallprompt', (event) => {
 var xhr = new XMLHttpRequest();
 var nickname_post = document.getElementById('nickname').textContent;
 var coin_from_local_storage = window.localStorage.getItem('coin')
-var json = JSON.stringify({"nickname_post" : nickname_post , "coin_DB" : coin_DB, "coin_from_local_storage" : coin_from_local_storage});   
+var best_score_from_local_storage = window.localStorage.getItem('bestScore')
+var shop_from_local_storage = window.localStorage.getItem('shopState')
+var json = JSON.stringify({"nickname_post" : nickname_post , "coin_DB" : coin_DB, "coin_from_local_storage" : coin_from_local_storage, "best_score_from_local_storage" : best_score_from_local_storage, "shop_from_local_storage" : shop_from_local_storage});   
 xhr.open("POST", 'api_response', true)
 xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
 xhr.send(json);

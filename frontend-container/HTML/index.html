@@ -25,11 +25,12 @@
                 <p id="game-over-info" class="game-over-p">GAME OVER</p>
                 <p id="best-score" class="game-over-p">Best: 0</p>
                 <p id="now-score" class="game-over-p">NOW: 0</p>
-                <p id="tap-info" class="game-over-p">Press any key to restart</p>
+                <p id="tap-info" class="game-over-p">Press any key to RESTART <br> Press ENTER / RETURN to SAVE</p>
             </div>
+
             <div id="shop-screen">
-                <img id="left-arrow" onclick="arrowClick(-1)" src={% static "img/shop/left-arrow.png" %}>
-                <img id="right-arrow" onclick="arrowClick(1)" src={% static "img/shop/right-arrow.png" %}>
+                <img id="left-arrow" src={% static "img/shop/left-arrow.png" %}>
+                <img id="right-arrow" src={% static "img/shop/right-arrow.png" %}>
                 <div id="price-block">
                     <img id="lock-icon" src={% static "img/shop/lock-icon.png" %}>
 
@@ -37,6 +38,7 @@
                         <span id="price">0</span>
                         <img id="price-coin-img" src={% static "img/coin.png" %} alt="#">
                     </div>
+
                 </div>
             </div>
         </div>
