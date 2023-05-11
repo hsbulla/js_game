@@ -55,6 +55,8 @@ def login_request(request):
     if is_ajax:
         if request.method == 'GET':
             nickname = request.GET.get('nikname_get', None)
+            ip = request.META.get('REMOTE_ADDR')
+
             conn = sqlite3.connect('db.sqlite3')
             cursor = conn.cursor()
             cursor.execute("SELECT coin, best_score FROM player_info WHERE nickname=?", (nickname,))
@@ -71,6 +73,7 @@ def login_request(request):
                 player_shop_to.item3 = 0
                 player_shop_to.item4 = 0
                 player_shop_to.item5 = 0
+                player_shop_to.save()
                 coin_DB = 0
                 best_score_DB = 0
                 shop_DB = '1,0,0,0,0'
@@ -89,6 +92,9 @@ def login_request(request):
                     shop_DB = ','.join(map(str, shop_DB))
                     shop_DB = str(shop_DB)
             conn.close()
+            query = "GET"
+            print_to_give = {'type':  query,'ip':  ip,'nickname': nickname, 'coin': coin_DB, 'best_score': best_score_DB, 'shop_item': shop_DB, 'active_item': active_item_from_DB }
+            print(print_to_give)
             return JsonResponse({'coin_DB':  coin_DB,'best_score_DB': best_score_DB, 'shop_DB': shop_DB, 'active_item_from_DB': active_item_from_DB})
         return JsonResponse({'status': 'Invalid request'}, status=400)
 
@@ -133,8 +139,19 @@ def api_response(request):
             best_score_to_DB = data_api_to_DB['best_score_from_local_storage']
             shop_to_db = data_api_to_DB['shop_from_local_storage']
             active_item_to_DB = data_api_to_DB['active_item_from_local_storage']
-            item1, item2, item3, item4, item5 = shop_to_db.split(',')
+            if shop_to_db is None:
+                item1 = 1
+                item2 = 0
+                item3 = 0
+                item4 = 0
+            else:
+                item1, item2, item3, item4, item5 = shop_to_db.split(',')
             nickname = data_api_to_DB['nickname_post']
+            ip = request.META.get('REMOTE_ADDR')
+
+            query = "POST"
+            print_to_save = {'type':  query,'ip':  ip,'nickname': nickname, 'coin': coin_to_DB, 'best_score': best_score_to_DB, 'shop_item': shop_to_db, 'active_item': active_item_to_DB }
+            print(print_to_save)
 
             conn = sqlite3.connect('db.sqlite3')  
             cursor = conn.cursor()
