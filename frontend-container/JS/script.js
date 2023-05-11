@@ -247,6 +247,7 @@ let shopIcon = window.document.querySelector('#shop-icon');
 let backIcon = window.document.querySelector('#back-icon');
 let shopScreen = window.document.querySelector('#shop-screen');
 let priceBlock = window.document.querySelector('#price-block');
+let coininfo1 = window.document.querySelector('#coin-score1');
 
 
 //Константы
@@ -365,7 +366,7 @@ const newRoadBlock = (zPos) => {
     } else if (score >= 5 && score <= 5) {
         ghghgh = ghghgh - 0.2;
         createPlatform(zPos * 6);
-    } else if ((score < 10 && score > 5)) {
+    } else if ((score < 9 && score > 5)) {
         createPlatform2(zPos * 6);
         ghghgh = ghghgh - 0.6;
     } else if (score < 18 && score > 14) {
@@ -387,24 +388,24 @@ const newRoadBlock = (zPos) => {
         CreateBoxRow(zPos * 6);
     } else if (score < 5 && score > 1) {
         CreateBoxRow(zPos * 6);
-        ghgh = ghgh + 0.45;
+        ghgh = ghgh + 0.4;
     } else if (score >= 5 && score <= 5) {
-        ghgh = ghgh - 0.5;
+        ghgh = ghgh - 0.4;
         CreateBoxRow(zPos * 6);
     }
-    else if ((score < 10 && score > 5)) {
+    else if ((score < 9 && score > 5)) {
         CreateBoxRow(zPos * 6);
-        ghgh = ghgh - 0.35;
+        ghgh = ghgh - 0.4;
     } else if (score < 18 && score > 14) {
         CreateBoxRow(zPos * 6);
-        ghgh = ghgh - 0.45;
+        ghgh = ghgh - 0.4;
     } else if (score >= 18 && score <= 18) {
-        ghgh = ghgh + 0.5;
+        ghgh = ghgh + 0.4;
         CreateBoxRow(zPos * 6);
     }
     else if ((score < 22 && score > 18)) {
         CreateBoxRow(zPos * 6);
-        ghgh = ghgh + 0.35;
+        ghgh = ghgh + 0.4;
     }
     else {
         ghgh = 0;
@@ -423,7 +424,7 @@ const newRoadBlock2 = (zPos) => {
     } else if (score >= 5 && score <= 5) {
         ghghgh = ghghgh + 0.2;
         createPlatform(zPos * 6);
-    } else if ((score < 10 && score > 5)) {
+    } else if ((score < 9 && score > 5)) {
         createPlatform1(zPos * 6);
         ghghgh = ghghgh + 0.6;
     } else if (score < 18 && score > 14) {
@@ -445,24 +446,24 @@ const newRoadBlock2 = (zPos) => {
         CreateBoxRow(zPos * 6);
     } else if (score < 5 && score > 1) {
         CreateBoxRow(zPos * 6);
-        ghgh = ghgh - 0.45;
+        ghgh = ghgh - 0.4;
     } else if (score >= 5 && score <= 5) {
-        ghgh = ghgh + 0.5;
+        ghgh = ghgh + 0.4;
         CreateBoxRow(zPos * 6);
     }
-    else if ((score < 10 && score > 5)) {
+    else if ((score < 9 && score > 5)) {
         CreateBoxRow(zPos * 6);
-        ghgh = ghgh + 0.35;
+        ghgh = ghgh + 0.4;
     } else if (score < 18 && score > 14) {
         CreateBoxRow(zPos * 6);
-        ghgh = ghgh + 0.45;
+        ghgh = ghgh + 0.4;
     } else if (score >= 18 && score <= 18) {
-        ghgh = ghgh - 0.5;
+        ghgh = ghgh - 0.4;
         CreateBoxRow(zPos * 6);
     }
     else if ((score < 22 && score > 18)) {
         CreateBoxRow(zPos * 6);
-        ghgh = ghgh - 0.35;
+        ghgh = ghgh - 0.4;
     }
     else {
         ghgh = 0;
@@ -477,8 +478,9 @@ const saveCoin = () => {
     window.localStorage.setItem('coin', coin);
 }
 const loadCoin = () => {
-    coin = coin_DB
+    coin = 0
     coininfo.innerText = coin;
+    coininfo1.innerText = coin_DB;
 }
 const saveBestScore = () => {
     window.localStorage.setItem('bestScore', score);
@@ -556,9 +558,9 @@ engine.runRenderLoop(() => {
 priceBlock.addEventListener("mousedown",
     (event) => {
         if (shopState[demoPos] === '0') {
-            if (priceArray[demoPos] <= coin) {
-                coin -= priceArray[demoPos];
-                coininfo.innerText = coin;
+            if (priceArray[demoPos] <= coin_DB) {
+                coin_DB -= priceArray[demoPos];
+                coininfo1.innerText = coin_DB;
                 saveCoin();
                 shopState[demoPos] = '1';
                 saveShopState();

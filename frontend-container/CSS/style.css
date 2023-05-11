@@ -10,7 +10,7 @@ body,
     font-family: 'Black Ops One', cursive;
     color: aliceblue;
     -webkit-user-select:none;
-     user-select: none;
+    user-select: none;
 }
 /* PLAY SCREEN */
 .a-pos {
@@ -70,10 +70,25 @@ body,
 }
 /* shop screen */
 
-#nav-bar, #shop-icon, #back-icon{
+#nav-bar, #shop-icon, #back-icon, #coin-info-text{
     position: absolute;
     top: 0;
     left: 0;
+}
+#coin-info-text{
+    left: 42%;
+    top: -2vh;
+    font-size: 5vh;
+}
+#coin-img1 {
+    top: 10vh;
+    right: 46%;
+    width: 6vh;
+}
+#coin-score1 {
+    top: 2vh;
+    right: 50%;
+    font-size: 7vh;
 }
 #shop-icon, #back-icon{
     width: 6vh;
@@ -118,15 +133,6 @@ body,
     right: 0;
     width: 5vh;
 }
-
-
-
-
-
-
-
-
-
 
 /* Анимации */
 @keyframes tap-info-anim {
