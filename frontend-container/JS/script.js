@@ -10,6 +10,7 @@ fetch(`?nikname_get=${nikname_get}`,{
 var coin_DB = data.coin_DB
 var best_score_DB = data.best_score_DB
 var shop_DB = data.shop_DB
+var active_item_from_DB = data.active_item_from_DB
 
 
 //Создание мира
@@ -301,9 +302,7 @@ const loadShopState = () => {
     shopState = shop_DB
         ? shop_DB.split(',')
         : shopState;
-    activeTexture = (window.localStorage.getItem('activeTexture'))
-        ? Number.parseInt(window.localStorage.getItem('activeTexture'))
-        : activeTexture;
+    activeTexture = active_item_from_DB
 }
 
 
@@ -523,6 +522,7 @@ scene.registerBeforeRender(() => { //Проверка не столкнулся 
     for (let i = 0; i < coinArray.length; i++) {  //Проверка не столкнулся ли мяч с монеткой
         if (Garry.intersectsMesh(coinArray[i], false)) {
             coin++;
+            console.log(coin)
             coininfo.innerText = coin;
             saveCoin();
             coinArray[i].dispose(); //удаление объекта со сцены 
@@ -668,7 +668,9 @@ var nickname_post = document.getElementById('nickname').textContent;
 var coin_from_local_storage = window.localStorage.getItem('coin')
 var best_score_from_local_storage = window.localStorage.getItem('bestScore')
 var shop_from_local_storage = window.localStorage.getItem('shopState')
-var json = JSON.stringify({"nickname_post" : nickname_post , "coin_DB" : coin_DB, "coin_from_local_storage" : coin_from_local_storage, "best_score_from_local_storage" : best_score_from_local_storage, "shop_from_local_storage" : shop_from_local_storage});   
+var active_item_from_local_storage = (window.localStorage.getItem('activeTexture'))
+console.log(active_item_from_local_storage)
+var json = JSON.stringify({"nickname_post" : nickname_post , "coin_DB" : coin_DB, "coin_from_local_storage" : coin_from_local_storage, "best_score_from_local_storage" : best_score_from_local_storage, "shop_from_local_storage" : shop_from_local_storage, "active_item_from_local_storage": active_item_from_local_storage});   
 xhr.open("POST", 'api_response', true)
 xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
 xhr.send(json);

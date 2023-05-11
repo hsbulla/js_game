@@ -74,6 +74,7 @@ def login_request(request):
                 coin_DB = 0
                 best_score_DB = 0
                 shop_DB = '1,0,0,0,0'
+                active_item_from_DB = 0
             else: 
                 cursor.execute("SELECT coin, best_score FROM player_info WHERE nickname=?", (nickname,))
                 result = cursor.fetchone()
@@ -82,12 +83,13 @@ def login_request(request):
                 cursor.execute("SELECT item1, item2, item3, item4, item5 FROM player_shop WHERE nickname=?", (nickname,))
                 result_shop = cursor.fetchone()
                 if result_shop:
-                    item1, item2, item3, item4, item5 = result_shop
+                    item5 = 0
+                    item1, item2, item3, item4, active_item_from_DB = result_shop
                     shop_DB = [item1, item2, item3, item4, item5]
                     shop_DB = ','.join(map(str, shop_DB))
                     shop_DB = str(shop_DB)
             conn.close()
-            return JsonResponse({'coin_DB':  coin_DB,'best_score_DB': best_score_DB, 'shop_DB': shop_DB})
+            return JsonResponse({'coin_DB':  coin_DB,'best_score_DB': best_score_DB, 'shop_DB': shop_DB, 'active_item_from_DB': active_item_from_DB})
         return JsonResponse({'status': 'Invalid request'}, status=400)
 
     conn = sqlite3.connect('db.sqlite3')  
@@ -130,6 +132,7 @@ def api_response(request):
             coin_to_DB = int(coin_from_local_storage) - int(coin_DB)
             best_score_to_DB = data_api_to_DB['best_score_from_local_storage']
             shop_to_db = data_api_to_DB['shop_from_local_storage']
+            active_item_to_DB = data_api_to_DB['active_item_from_local_storage']
             item1, item2, item3, item4, item5 = shop_to_db.split(',')
             nickname = data_api_to_DB['nickname_post']
 
@@ -156,17 +159,17 @@ def api_response(request):
             conn = sqlite3.connect('db.sqlite3') 
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM player_shop WHERE nickname=?", (nickname,))
-            if cursor.fetchone() is None: # записи нет, создаем новую
+            if cursor.fetchone() is None: 
                 player_shop_to = player_shop()
                 player_shop_to.nickname = nickname
                 player_shop_to.item1 = item1
                 player_shop_to.item2 = item2
                 player_shop_to.item3 = item3
                 player_shop_to.item4 = item4
-                player_shop_to.item5 = item5
+                player_shop_to.item5 = 0
                 player_shop_to.save()
-            else:   # запись есть, обновляем значения в соответствующих столбцах
-                cursor.execute("UPDATE player_shop SET item1=?, item2=?, item3=?, item4=?, item5=?  WHERE nickname=?", (item1, item2, item3, item4, item5, nickname))
+            else:   
+                cursor.execute("UPDATE player_shop SET item1=?, item2=?, item3=?, item4=?, item5=?  WHERE nickname=?", (item1, item2, item3, item4, active_item_to_DB, nickname))
                 conn.commit()
             cursor.close()
             conn.close()
